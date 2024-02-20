@@ -1,23 +1,22 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef SIMPLECLIENT_H
+#define SIMPLECLIENT_H
 
-#include <QMainWindow>
+#include <QString>
+#include <QTcpSocket>
+#include <QHostAddress>
 
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class Client;
-}
-QT_END_NAMESPACE
-
-class Client : public QMainWindow
+class Client: public QObject
 {
     Q_OBJECT
-
 public:
-    Client(QWidget *parent = nullptr);
+    Client(QObject* parent = 0);
     ~Client();
-
+    void start( QString address, quint16 port );
+public slots:
+    void startTransfer();
+    void startRead();
 private:
-    Ui::Client *ui;
+    QTcpSocket *client;
 };
-#endif // CLIENT_H
+
+#endif // SIMPLECLIENT_H

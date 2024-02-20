@@ -1,23 +1,30 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef SIMPLESERVER_H
+#define SIMPLESERVER_H
 
-#include <QMainWindow>
+#include <QObject>
 
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class Server;
-}
-QT_END_NAMESPACE
+// Darauf achten, dass in der .pro-Datei folgender Eintrag steht
+// QT += network
+// Falls nachträglich hinzugefügt, dann qmake nocheinmal starten
+// sonst werden die beiden folgenden Zeilen nicht erkannt
+#include <QTcpServer>
+#include <QTcpSocket>
 
-class Server : public QMainWindow
+
+#define MAXCLIENT 2
+
+class Server: public QObject
 {
     Q_OBJECT
-
 public:
-    Server(QWidget *parent = nullptr);
+    Server(QObject * parent = 0);
     ~Server();
 
+public slots:
+    void acceptConnection();
+    void startRead();
 private:
-    Ui::Server *ui;
+    QTcpServer *server;
+    QTcpSocket* client;
 };
-#endif // SERVER_H
+#endif // SIMPLESERVER_H
