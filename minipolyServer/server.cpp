@@ -1,11 +1,14 @@
 #include "server.h"
 #include <QDateTime>
 
+//Hallo ich bin eine Änderung hihi
 Server::Server(QObject* parent): QObject(parent)
 {
     client=NULL;
-    server=new QTcpServer;
-
+    if (server == NULL)
+    {
+        server=new QTcpServer;
+    }
     connect(server, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
     server->listen(QHostAddress::Any, 8888);
 }

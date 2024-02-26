@@ -1,5 +1,5 @@
-#ifndef SIMPLECLIENT_H
-#define SIMPLECLIENT_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
 #include <QString>
 #include <QTcpSocket>
@@ -19,4 +19,4 @@ private:
     QTcpSocket *client;
 };
 
-#endif // SIMPLECLIENT_H
+#endif // CLIENT_H
