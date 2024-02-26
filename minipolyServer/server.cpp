@@ -1,6 +1,7 @@
 #include "server.h"
 #include <QDateTime>
 
+//Hallo ich bin eine Änderung hihi
 Server::Server(QObject* parent): QObject(parent)
 {
     client=NULL;
