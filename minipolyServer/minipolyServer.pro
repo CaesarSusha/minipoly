@@ -1,4 +1,6 @@
-QT       += core gui
+QT       += \
+            core gui\
+            network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,6 +19,8 @@ HEADERS += \
 
 FORMS += \
     server.ui
+
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

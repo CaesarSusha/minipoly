@@ -1,4 +1,4 @@
-#include "simpleServer.h"
+#include "server.h"
 #include <QDateTime>
 
 Server::Server(QObject* parent): QObject(parent)
