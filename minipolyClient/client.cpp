@@ -19,6 +19,11 @@ Client::~Client()
 void Client::onConnection()
 {
     qInfo()<<"Connected to server";
+
+    connect(&m_webSocket, &QWebSocket::textMessageReceived, this, &Client::receiveData);
+
+    //transmit success
+    transmitData("I want to connect to you bro");
 }
 
 void Client::onDisconnection()
@@ -26,12 +31,13 @@ void Client::onDisconnection()
     qInfo()<<"Disconnected from server";
 }
 
-QString Client::receiveData()
+void Client::receiveData(QString data)
 {
-    qInfo()<<"Received data from serverito";
+    qInfo()<<"Received data from server: " << data;
 }
 
 void Client::transmitData(QString data)
 {
-    qInfo()<<"Gave data to serveritto";
+    qInfo()<<"Passing data to server:" << data;
+    m_webSocket.sendTextMessage(data);
 }

@@ -1,9 +1,7 @@
 #include "server.h"
-#include <QDateTime>
-#include <QtWebSockets>
 #include "QtWebSockets/qwebsocketserver.h"
 #include "QtWebSockets/qwebsocket.h"
-
+#include <QDateTime>
 
 QT_USE_NAMESPACE
 
@@ -38,22 +36,37 @@ void Server::onConnection()
 {
     qInfo()<<"nouvelle connecthione:";
 
+    QWebSocket *pSocket = m_pWebSocketServer->nextPendingConnection();
+
+    connect(pSocket, &QWebSocket::textMessageReceived, this, &Server::handleReceivedData);
+    connect(pSocket, &QWebSocket::disconnected, this, &Server::onDisconnection);
+
+    m_clients << pSocket;
+    qInfo() << m_clients.length();
+    qInfo()<<"socketConnected:"<< pSocket;
+
+    //Show new User
+    transmitData("A user joined.");
 }
 
 
 void Server::onDisconnection()
 {
-
+    qInfo()<<"Client disconnected";
 }
 
-QString Server::receiveData()
+void Server::handleReceivedData(QString data)
 {
-    return nullptr;
+    qInfo()<<"Received data from client: " << data;
 }
 
 
 void Server::transmitData(QString data)
 {
-
+    qInfo()<<"Passing data to client: " << data;
+    for (QWebSocket *client : qAsConst(m_clients))
+    {
+        client->sendTextMessage(data);
+    }
 }
 

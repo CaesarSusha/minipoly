@@ -23,7 +23,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void onConnection();
     void onDisconnection();
-    QString receiveData();
+    void handleReceivedData(QString data);
     void transmitData(QString data);
 
 private:
