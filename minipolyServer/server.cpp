@@ -1,60 +1,59 @@
 #include "server.h"
 #include <QDateTime>
+#include <QtWebSockets>
+#include "QtWebSockets/qwebsocketserver.h"
+#include "QtWebSockets/qwebsocket.h"
 
-//Hallo ich bin eine Änderung hihi
-Server::Server(QObject* parent): QObject(parent)
+
+QT_USE_NAMESPACE
+
+Server* Server::instance =nullptr;
+
+Server *Server::getInstance()
 {
-    client=NULL;
-    if (server == NULL)
+    if(instance == nullptr)
     {
-        server=new QTcpServer;
+        instance = new Server(3000);
     }
-    connect(server, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
-    server->listen(QHostAddress::Any, 8888);
+    return instance;
+}
+
+Server::Server(quint16 port) :
+    m_pWebSocketServer(new QWebSocketServer(QStringLiteral("Server"), QWebSocketServer::NonSecureMode,this))
+{
+    qInfo() << "forced server into existence";
+    if (m_pWebSocketServer->listen(QHostAddress::Any, port))
+    {
+        connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &Server::onConnection);
+    }
 }
 
 Server::~Server()
 {
-    server->close();
-    if(client != NULL)
-        client->close();
-    server->deleteLater();
+    m_pWebSocketServer->close();
+    qDeleteAll(m_clients.begin(), m_clients.end());
 }
 
-void Server::acceptConnection()
+void Server::onConnection()
 {
-    //Verbindung annehmen
-    client = server->nextPendingConnection();
-    connect(client, SIGNAL(readyRead()), this, SLOT(startRead()));
+    qInfo()<<"nouvelle connecthione:";
+
 }
 
-void Server::startRead(){
 
-    // Dieser Slot wird aufgerufen, sobald der Client Daten an den Server sendet
-    // Der Server überprüft, ob es sich um einen GET-Request handelt und sendet ein sehr
-    // einfaches HTML-Dokument zurück
+void Server::onDisconnection()
+{
 
-    QTcpSocket *socket = (QTcpSocket* ) QObject::sender();
+}
 
-    if ( socket->canReadLine() )
-    {
-        QStringList tokens = QString( socket->readLine() ).split( QRegExp( "[ \r\n][ \r\n]*" ) );
-        if ( tokens[0] == "GET" )
-        {
-            QTextStream os( socket );
-            os.setAutoDetectUnicode( true );
-            os << "HTTP/1.0 200 Ok\r\n"
-                  "Content-Type: text/html; charset=\"utf-8\"\r\n"
-                  "\r\n"
-                  "<h1>Hallo!</h1>\n"
-               << QDateTime::currentDateTime().toString() << "\n";
-            socket->close();
+QString Server::receiveData()
+{
+    return nullptr;
+}
 
-            if ( socket->state() == QTcpSocket::UnconnectedState )
-            {
-                delete socket;
-            }
-        }
-    }
+
+void Server::transmitData(QString data)
+{
+
 }
 

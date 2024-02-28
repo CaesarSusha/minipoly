@@ -1,22 +1,28 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include <QString>
-#include <QTcpSocket>
-#include <QHostAddress>
+#include <QtCore/QObject>
+#include <QtWebSockets/QWebsocket>
 
-class Client: public QObject
+class Client : public QObject
 {
     Q_OBJECT
 public:
-    Client(QObject* parent = 0);
+    explicit Client(const QUrl &url, QObject *parent = nullptr);
     ~Client();
-    void start( QString address, quint16 port );
-public slots:
-    void startTransfer();
-    void startRead();
+
+Q_SIGNALS:
+    void closed();
+
+private Q_SLOTS:
+    void onConnection();
+    void onDisconnection();
+    QString receiveData();
+    void transmitData(QString data);
+
 private:
-    QTcpSocket *client;
+    QWebSocket m_webSocket;
+
 };
 
 #endif // CLIENT_H

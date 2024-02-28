@@ -1,30 +1,39 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <QObject>
+#include <QtCore/QObject>
+#include <QtCore/QList>
+#include <QtCore/QByteArray>
 
-// Darauf achten, dass in der .pro-Datei folgender Eintrag steht
-// QT += network
-// Falls nachträglich hinzugefügt, dann qmake nocheinmal starten
-// sonst werden die beiden folgenden Zeilen nicht erkannt
-#include <QTcpServer>
-#include <QTcpSocket>
-
-
-#define MAXCLIENT 2
+QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
+QT_FORWARD_DECLARE_CLASS(QWebSocket)
 
 class Server: public QObject
 {
     Q_OBJECT
+
 public:
-    Server(QObject * parent = 0);
+    static Server *getInstance();
     ~Server();
 
-public slots:
-    void acceptConnection();
-    void startRead();
+
+Q_SIGNALS:
+    void closed();
+
+private Q_SLOTS:
+    void onConnection();
+    void onDisconnection();
+    QString receiveData();
+    void transmitData(QString data);
+
 private:
-    QTcpServer *server;
-    QTcpSocket* client;
+    //Singleton Server Instanz
+    static Server *instance;
+    //quint16 = short
+    explicit Server(quint16 port);
+    QWebSocketServer *m_pWebSocketServer;
+    QList<QWebSocket*> m_clients;
+
+
 };
-#endif // SIMPLESERVER_H
+#endif // SERVER_H

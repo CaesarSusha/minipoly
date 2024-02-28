@@ -1,41 +1,37 @@
 #include "client.h"
 
-Client::Client( QObject* parent ): QObject( parent ){
-    client=new QTcpSocket;
-    connect( client, SIGNAL( connected() ), this, SLOT( startTransfer() ) );
-    connect(client, SIGNAL(readyRead()), this, SLOT(startRead()));
-}
+QT_USE_NAMESPACE
 
-Client::~Client(){
-    client->close();
-    client->deleteLater();
-}
-
-void Client::start( QString address, quint16 port )
+Client::Client(const QUrl &url, QObject *parent) : QObject(parent)
 {
-    QHostAddress addr( address );
-    client->connectToHost( addr, port );
+    connect(&m_webSocket, &QWebSocket::connected, this, &Client::onConnection);
+    //connect(&m_webSocket, &QWebSocket::disconnected, this, &Client::closed);
+    m_webSocket.open(url);
 }
 
-void Client::startTransfer(){
-    QString str("GET \r\n \r\n");
-    QByteArray ba = str.toLocal8Bit();
-    const char *c_str = ba.data();
+Client::~Client()
+{
+    //m_webSocket.close();
 
-    client->write( c_str, str.length()+1 );
+    //Client::closed();
 }
 
-
-void Client::startRead(){
-
-    char buffer[1024] = {0};
-    QTcpSocket *sender = (QTcpSocket* ) QObject::sender();
-    sender->read(buffer, sender->bytesAvailable());
-
-    //Empfangenen String zum Debuggen ausgeben
-    qDebug() << buffer;
-
-    //Empfangenen String auswerten
-    //ToDo
+void Client::onConnection()
+{
+    qInfo()<<"Connected to server";
 }
 
+void Client::onDisconnection()
+{
+    qInfo()<<"Disconnected from server";
+}
+
+QString Client::receiveData()
+{
+    qInfo()<<"Received data from serverito";
+}
+
+void Client::transmitData(QString data)
+{
+    qInfo()<<"Gave data to serveritto";
+}

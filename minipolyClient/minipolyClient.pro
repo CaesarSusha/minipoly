@@ -1,6 +1,6 @@
-QT       += \
-            core gui\
-            network
+QT       += core gui
+QT       += network
+QT       += websockets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,14 +11,18 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    client.cpp \
+    gridcell.cpp \
     main.cpp \
-    client.cpp
+    mainwindow.cpp
 
 HEADERS += \
-    client.h
+    client.h \
+    gridcell.h \
+    mainwindow.h
 
 FORMS += \
-    client.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
