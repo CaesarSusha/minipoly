@@ -2,36 +2,22 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QWebSocket>
-
-
-// QT_BEGIN_NAMESPACE
-// namespace Ui { class MainWindow; }
-// QT_END_NAMESPACE
-
+#include <QPushButton>
 
 class MainWindow : public QMainWindow
 {
-//     Q_OBJECT
+    Q_OBJECT
 public:
-    MainWindow(QWidget *parent = nullptr);
-//     ~MainWindow();
+    explicit MainWindow(QWidget *parent = nullptr);
 
-// public slots:
-//     //Message-Handling von erhaltenen Nachrichten
-//     void handleIncomingMessages(QString message);
+signals:
+    void passDataButtonClicked(const QString &data);
 
-//     //Sende den Funk zu dem Server
-//     void sendFunk(QString message);
-//     //Sende den Namen an den Server
-//     void sendName(QString name);
+private slots:
+    void onPassDataButtonClicked();
 
-// private:
-//     //Das Fenster
-//     Ui::MainWindow *ui;
-//     //Der client socket für die Kommunikation mit dem Server
-//     QWebSocket client;
-//};
-
+private:
+    QPushButton *m_passDataButton;
 };
+
 #endif // MAINWINDOW_H

@@ -2,7 +2,8 @@
 #define CLIENT_H
 
 #include <QtCore/QObject>
-#include <QtWebSockets/QWebsocket>
+#include <QtWebSockets>
+#include "mainwindow.h"
 
 class Client : public QObject
 {
@@ -14,15 +15,18 @@ public:
 Q_SIGNALS:
     void closed();
 
+signals:
+    void passDataButtonClicked(const QString &data);
+
 private Q_SLOTS:
     void onConnection();
     void onDisconnection();
-    void receiveData(QString data);
+    void handleReceivedData(QString data);
     void transmitData(QString data);
 
 private:
     QWebSocket m_webSocket;
-
+    MainWindow m_mainWindow;
 };
 
 #endif // CLIENT_H

@@ -58,8 +58,8 @@ void Server::onDisconnection()
 void Server::handleReceivedData(QString data)
 {
     qInfo()<<"Received data from client: " << data;
+    transmitData("i am the server. I got your data, client.");
 }
-
 
 void Server::transmitData(QString data)
 {
