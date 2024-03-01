@@ -5,7 +5,7 @@
 
 QT_USE_NAMESPACE
 
-Server* Server::instance =nullptr;
+Server* Server::instance = nullptr;
 
 Server *Server::getInstance()
 {

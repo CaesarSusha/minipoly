@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="b_t_train">assets/buildings/train.png</file>
+		<file alias="b_f_freeparking">assets/buildings/freeparking.png</file>
+    </qresource>
+</RCC>

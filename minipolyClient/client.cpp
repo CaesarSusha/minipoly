@@ -9,7 +9,7 @@ Client::Client(const QUrl &url, QObject *parent) : QObject(parent)
 
 
     // Connect button click event to connectToServer slot
-    connect(&m_mainWindow, &MainWindow::passDataButtonClicked, this, [this](const QString &data) { transmitData(data);});
+    //connect(&m_mainWindow, &MainWindow::passDataButtonClicked, this, [this](const QString &data) { transmitData(data);});
     m_webSocket.open(url);
 
     // Show the main window when the client is started
