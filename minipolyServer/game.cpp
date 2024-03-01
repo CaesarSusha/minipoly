@@ -6,30 +6,18 @@ Game::Game()
     gameBoard = Board();
     currentPlayer = Player();
     turn = 0;
-    for(int i = 0; i > 1; i++)
-    {
-        //Spielerplätze werden erstellt
-        players[i] = Player();
-    }
 }
 
 int Game::addPlayer()
 {
-    for(int i = 0; i > 1; i++)
-    {
-        //Spieler wird erstellt
-        if(players[i].getId() == -1)
-        {
-            players[i] = Player(i);
-            return i;
-        }
-    }
-    return -1;
+    int playerAmount = players.size();
+    players.push_back(Player(playerAmount));
+    return playerAmount;
 }
 
 void Game::runGame()
 {
-    //hier kommt die Spiellogik
+    //hierhin kommt die Spiellogik
     return;
 }
 
@@ -50,11 +38,25 @@ Player Game::getCurrentPlayer()
 
 Player Game::getNextPlayer()
 {
-    if(currentPlayer.getId() == players[0].getId())
+    int playerAmount = players.size();
+    if(playerAmount == 0)
     {
-        return players[1];
+        return Player();
     }
-    return players[0];
-
+    int currentPlayerId = currentPlayer.getId();
+    if(currentPlayerId == playerAmount)
+    {
+        //Letzter Spieler in der Reihe war am Zug -> erster Spieler beginnt seinen Zug
+        return players[0];
+    }
+    else
+    {
+        //Nächster bzw. erster Spieler wird ausgegeben
+        return players[currentPlayerId + 1];
+    }
 }
 
+int Game::getTurn()
+{
+    return turn;
+}

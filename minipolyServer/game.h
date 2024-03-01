@@ -4,6 +4,7 @@
 #include "board.h"
 #include "player.h"
 #include "dice.h"
+#include <vector>
 
 class Game
 {
@@ -18,18 +19,15 @@ public:
     void runGame();
     int rollDice(Dice dices);
     void setCurentPlayer(Player newPlayer);
-    int getCurrentPlayer();
-    int getNextPlayer();
+    Player getCurrentPlayer();
+    Player getNextPlayer();
     int getTurn();
 
 private:
     Player currentPlayer;
     int turn;
     //Player Objekte für die Spieler
-    Player players[2];
-
-
-
+    std::vector<Player> players;
 };
 
 #endif // GAME_H

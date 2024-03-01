@@ -13,7 +13,7 @@ public:
 
 private:
     //Anzahl der Augen, die der Würfel haben soll
-    int Eyes;
+    int eyes;
 };
 
 #endif // DICE_H

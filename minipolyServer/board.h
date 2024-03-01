@@ -8,9 +8,9 @@ class Board
 public:
     Board();
     //Felder des Spielfeldes
-    Square Squares[28];
+    Square squares[28];
 private:
-    void initializeBoard(Square Squares[]);
+    void initializeBoard();
 };
 
 #endif // BOARD_H
