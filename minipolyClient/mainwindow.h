@@ -7,6 +7,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QPixmap>
+#include <vector>
 
 // QT_BEGIN_NAMESPACE
 // namespace Ui { class MainWindow; }
@@ -19,7 +20,19 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     //~MainWindow();
-    GridCell* grid[5][5];
+    GridCell* grid[8][8];
+
+    void drawEmptyCell(int x, int y);
+    void drawFreeParking(int x, int y );
+    void drawBuilding(int x, int y, char direction);
+
+    // determine card dimensions
+    int determineWidth(int x);
+    int determineHeight(int y);
+
+    //save last position
+    int lastXPos;
+    int lastYPos;
 
     //screen size
     int width;
