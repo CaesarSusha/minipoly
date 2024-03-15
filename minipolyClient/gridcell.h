@@ -14,6 +14,7 @@ public:
     virtual ~GridCell();
     int x;
     int y;
+
 };
 
 #endif // GRIDCELL_H

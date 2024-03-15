@@ -8,7 +8,7 @@ class FrontEndBoard
 public:
     FrontEndBoard();
     // this enables easier png switching. [collection][number]
-    QString picturepaths[9][4];
+    //QString picturepaths[9][4];
 };
 
 #endif // FRONTENDBOARD_H

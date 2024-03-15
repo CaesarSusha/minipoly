@@ -24,7 +24,7 @@ public:
 
     void drawEmptyCell(int x, int y);
     void drawFreeParking(int x, int y );
-    void drawBuilding(int x, int y, char direction);
+    void initGrid();
 
     // determine card dimensions
     int determineWidth(int x);
@@ -38,6 +38,13 @@ public:
     int width;
     int height;
     int boardSize;
+
+    //pictures
+    QString picturePaths[28] = {};
+    void fillPicturePathsArray();
+
+    //Ownership
+    void setBorder(int x, int y, QString color);
 };
 
 #endif // MAINWINDOW_H
