@@ -13,14 +13,12 @@ CONFIG += c++17
 
 SOURCES += \
     client.cpp \
-    frontendboard.cpp \
     gridcell.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     client.h \
-    frontendboard.h \
     gridcell.h \
     mainwindow.h
 

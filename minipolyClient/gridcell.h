@@ -12,6 +12,9 @@ class GridCell : public QPushButton
 public:
     GridCell(QWidget* parent = 0, int x = 0, int y = 0); //maybe use a "problem" picture
     virtual ~GridCell();
+    //Ownership
+    void setBorder(QString color);
+
     int x;
     int y;
 

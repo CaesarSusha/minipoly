@@ -22,29 +22,23 @@ public:
     //~MainWindow();
     GridCell* grid[8][8];
 
-    void drawEmptyCell(int x, int y);
-    void drawFreeParking(int x, int y );
     void initGrid();
-
-    // determine card dimensions
-    int determineWidth(int x);
-    int determineHeight(int y);
-
-    //save last position
-    int lastXPos;
-    int lastYPos;
 
     //screen size
     int width;
     int height;
     int boardSize;
 
-    //pictures
-    QString picturePaths[28] = {};
-    void fillPicturePathsArray();
+    // determine rectangle dimensions
+    int determineWidth(int x);
+    int determineHeight(int y);
 
-    //Ownership
-    void setBorder(int x, int y, QString color);
+    //save last position
+    int lastXPos;
+    int lastYPos;
+    void updateLastPos(int y, int rectHeight, int rectWidth);
+
+
 };
 
 #endif // MAINWINDOW_H
