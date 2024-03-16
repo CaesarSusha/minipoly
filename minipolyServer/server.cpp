@@ -46,13 +46,17 @@ void Server::onConnection()
     qInfo()<<"socketConnected:"<< pSocket;
 
     //Show new User
-    transmitData("A user joined.");
+    broadcastData("Player" + QString::number(m_clients.length()) + " joined.");
 
     //Debugging purpose
     //User 1 has bought a house
-    transmitData("changeOwner-2-3");
-    //It is now User 2s turn
-    transmitData("currentPlayer-0");
+    // broadcastData("setOwner-2-3");
+    // broadcastData("setOwner-16-3");
+    // broadcastData("setOwner-23-3");
+    // broadcastData("setOwner-9-3");
+    //It is now Player 1s turn
+    broadcastData("setCurrentPlayer-1");
+    transmitData("setPlayerId-" + QString::number(m_clients.length()) , m_clients.at(m_clients.length()-1));
 }
 
 
@@ -64,15 +68,31 @@ void Server::onDisconnection()
 void Server::handleReceivedData(QString data)
 {
     qInfo()<<"Received data from client: " << data;
-    transmitData("i am the server. I got your data, client.");
+    if (data == "3")
+    {
+        int rollResult = this->game->rollDice(6);
+        broadcastData("setDice-" + QString::number(rollResult));
+        // walk
+    }
 }
 
-void Server::transmitData(QString data)
+void Server::broadcastData(QString data)
 {
-    qInfo()<<"Passing data to client: " << data;
+    qInfo()<<"Broadcasting data: " << data;
     for (QWebSocket *client : qAsConst(m_clients))
     {
         client->sendTextMessage(data);
     }
+}
+
+void Server::transmitData(QString data, QWebSocket *client)
+{
+    if (!client) {
+        qWarning() << "Invalid client specified.";
+        return;
+    }
+
+    qInfo() << "Passing data to client:" << data;
+    client->sendTextMessage(data);
 }
 

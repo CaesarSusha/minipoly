@@ -1,7 +1,8 @@
-QT       += core gui
-QT       += network
-QT       += websockets
-QT       += widgets
+QT  += core gui
+QT  += network
+QT  += websockets
+QT  += widgets
+QT  += svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

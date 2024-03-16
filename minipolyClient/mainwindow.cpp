@@ -7,6 +7,7 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+
     this->width = 1920;
     this->height = 1080;
     this->boardSize = 900;
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     this->lastYPos = 0;
 
     initGrid();
+    grid[5][3]->setIcon(QIcon(QPixmap(":/dice")));
 }
 
 void MainWindow::initGrid()
@@ -38,8 +40,11 @@ void MainWindow::initGrid()
 
             if (grid[x][y]->icon().isNull())
             {
+                // enable this code once you're done designing
+                grid[x][y]->setFlat(true);
                 grid[x][y]->setEnabled(false);
             }
+
             //qInfo() << "hallo " << grid[x][y]->icon();
             updateLastPos(y, rectHeight, rectWidth);
 
@@ -72,22 +77,43 @@ void MainWindow::updateLastPos(int y, int rectHeight, int rectWidth)
     }
 }
 
-void MainWindow::changeOwner(int x, int y, int playerId)
+void MainWindow::setOwner(int x, int y, int playerId)
 {
     grid[x][y]->setBorder(this->getColorFromPlayerId(playerId));
+}
+
+void MainWindow::setCurrentPlayer(int playerId)
+{
+    currentPlayerId = playerId;
+    if(currentPlayerId == this->myPlayerId)
+    {
+        grid[5][3]->setEnabled(true);
+        grid[4][3]->setText("Your Turn!");
+    }
+    else
+    {
+        grid[5][3]->setEnabled(false);
+        grid[4][3]->setText("Waiting...");
+    }
+}
+
+void MainWindow::displayRolledDice(int dice)
+{
+    grid[5][4]->setText(QString::number(dice));
+    grid[5][4]->setStyleSheet("color: "+ getColorFromPlayerId(currentPlayerId) + ";");
 }
 
 QString MainWindow::getColorFromPlayerId(int id)
 {
     switch(id)
     {
-    case 0:
-        return "#ff0000";
     case 1:
-        return "#0000ff";
+        return "#ff00ff";
     case 2:
-        return "#00ff00";
+        return "#0000ff";
     case 3:
+        return "#00ff00";
+    case 4:
         return "#ffff00";
     default:
         return "#ffffff";

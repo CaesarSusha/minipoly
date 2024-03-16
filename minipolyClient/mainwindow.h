@@ -37,8 +37,15 @@ public:
     int lastXPos;
     int lastYPos;
     void updateLastPos(int y, int rectHeight, int rectWidth);
-    void changeOwner(int x, int y, int playerId);
+
+    // server data handling
+    void setOwner(int x, int y, int playerId);
     QString getColorFromPlayerId(int playerId);
+    void setCurrentPlayer(int playerId);
+    void displayRolledDice(int dice);
+
+    int myPlayerId;
+    int currentPlayerId;
 
 
 };

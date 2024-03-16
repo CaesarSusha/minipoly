@@ -10,6 +10,7 @@ Game::Game()
 
 int Game::addPlayer()
 {
+    //wozu returned das hier playeramount?????
     int playerAmount = players.size();
     players.push_back(Player(playerAmount));
     return playerAmount;
