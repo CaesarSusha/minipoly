@@ -37,6 +37,8 @@ public:
     int lastXPos;
     int lastYPos;
     void updateLastPos(int y, int rectHeight, int rectWidth);
+    void changeOwner(int x, int y, int playerId);
+    QString getColorFromPlayerId(int playerId);
 
 
 };

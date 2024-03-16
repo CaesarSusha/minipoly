@@ -41,10 +41,35 @@ void Client::onDisconnection()
 void Client::handleReceivedData(QString data)
 {
     qInfo()<<"Received data from server: " << data;
+    QStringList  splitData = data.split("-");
+    if(splitData[0] == "changeOwner")
+    {
+        int gridcellId = splitData[1].toInt();
+        Client::coordinates coords = convertIdToCoordinates(gridcellId);
+        int playerId = splitData[2].toInt();
+        m_mainWindow.changeOwner(coords.x, coords.y, playerId);
+    }
 }
 
 void Client::transmitData(QString data)
 {
     qInfo()<<"Passing data to server:" << data;
     m_webSocket.sendTextMessage(data);
+}
+
+Client::coordinates Client::convertIdToCoordinates(int gridcellId)
+{
+    coordinates coords;
+    switch(gridcellId)
+    {
+    case 2:
+        coords.x = 5;
+        coords.y = 0;
+        break;
+    default:
+        coords.x = 0;
+        coords.y = 0;
+        break;
+    }
+    return coords;
 }

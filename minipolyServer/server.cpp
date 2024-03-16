@@ -47,6 +47,12 @@ void Server::onConnection()
 
     //Show new User
     transmitData("A user joined.");
+
+    //Debugging purpose
+    //User 1 has bought a house
+    transmitData("changeOwner-2-3");
+    //It is now User 2s turn
+    transmitData("currentPlayer-0");
 }
 
 

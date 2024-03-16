@@ -7,10 +7,17 @@
 
 class Client : public QObject
 {
+    public:
+        struct coordinates {             // Structure declaration
+            int x;         // Member (int variable)
+            int y;   // Member (string variable)
+        };
+
     Q_OBJECT
 public:
     explicit Client(const QUrl &url, QObject *parent = nullptr);
     ~Client();
+
 
 Q_SIGNALS:
     void closed();
@@ -23,6 +30,7 @@ private Q_SLOTS:
     void onDisconnection();
     void handleReceivedData(QString data);
     void transmitData(QString data);
+    coordinates convertIdToCoordinates(int gridcellId);
 
 private:
     QWebSocket m_webSocket;

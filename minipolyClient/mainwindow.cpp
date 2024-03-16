@@ -40,7 +40,7 @@ void MainWindow::initGrid()
             {
                 grid[x][y]->setEnabled(false);
             }
-            qInfo() << "hallo " << grid[x][y]->icon();
+            //qInfo() << "hallo " << grid[x][y]->icon();
             updateLastPos(y, rectHeight, rectWidth);
 
             //grid[x][y]->setEnabled(false);
@@ -72,3 +72,24 @@ void MainWindow::updateLastPos(int y, int rectHeight, int rectWidth)
     }
 }
 
+void MainWindow::changeOwner(int x, int y, int playerId)
+{
+    grid[x][y]->setBorder(this->getColorFromPlayerId(playerId));
+}
+
+QString MainWindow::getColorFromPlayerId(int id)
+{
+    switch(id)
+    {
+    case 0:
+        return "#ff0000";
+    case 1:
+        return "#0000ff";
+    case 2:
+        return "#00ff00";
+    case 3:
+        return "#ffff00";
+    default:
+        return "#ffffff";
+    }
+}
