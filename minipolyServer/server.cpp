@@ -57,6 +57,8 @@ void Server::onConnection()
     //It is now Player 1s turn
     broadcastData("setCurrentPlayer-1");
     transmitData("setPlayerId-" + QString::number(m_clients.length()) , m_clients.at(m_clients.length()-1));
+    //game->addPlayer();
+    //qInfo() << game->getCurrentPlayer().getId();
 }
 
 
@@ -70,9 +72,13 @@ void Server::handleReceivedData(QString data)
     qInfo()<<"Received data from client: " << data;
     if (data == "3")
     {
-        int rollResult = this->game->rollDice(6);
+        //verstehe ich bei Gott nicht
+        //int rollResult = this->game->rollDice();
+        int rollResult = 4;
         broadcastData("setDice-" + QString::number(rollResult));
-        // walk
+        // Trying to walk
+        //game->calculateNewPosition(rollResult);
+        //broadcastData("updatePosition-" + QString::number(game->getCurrentPlayer().getId()) + QString::number(rollResult));
     }
 }
 

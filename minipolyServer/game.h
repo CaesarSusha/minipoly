@@ -17,8 +17,9 @@ public:
 
     int addPlayer();
     void runGame();
-    int rollDice(Dice dices);
-    void setCurentPlayer(Player newPlayer);
+    int rollDice();
+    void calculateNewPosition(int rollresult);
+    void setCurrentPlayer(Player newPlayer);
     Player getCurrentPlayer();
     Player getNextPlayer();
     int getTurn();

@@ -5,7 +5,7 @@ Game::Game()
     dices = Dice(6);
     gameBoard = Board();
     currentPlayer = Player();
-    turn = 0;
+    turn = 1;
 }
 
 int Game::addPlayer()
@@ -22,12 +22,17 @@ void Game::runGame()
     return;
 }
 
-int Game::rollDice(Dice dices)
+int Game::rollDice()
 {
     return dices.rollDice();
 }
 
-void Game::setCurentPlayer(Player newPlayer)
+void Game::calculateNewPosition(int rollresult)
+{
+    currentPlayer.setPosition(currentPlayer.getPosition() + rollresult);
+}
+
+void Game::setCurrentPlayer(Player newPlayer)
 {
     currentPlayer = newPlayer;
 }
