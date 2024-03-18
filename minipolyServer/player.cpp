@@ -7,8 +7,9 @@ Player::Player()
     purse = 10000;
 }
 
-Player::Player(int id)
+Player::Player(QWebSocket *socket, int id)
 {
+    this->socket = socket;
     this->id = id;
     position = 0;
     purse = 10000;
@@ -17,6 +18,11 @@ Player::Player(int id)
 int Player::getId()
 {
     return id;
+}
+
+QWebSocket* Player::getSocket()
+{
+    return socket;
 }
 
 void Player::setPosition(int position)

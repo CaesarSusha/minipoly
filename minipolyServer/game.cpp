@@ -5,19 +5,33 @@ Game::Game()
     dices = Dice(6);
     gameBoard = Board();
     currentPlayer = Player();
-    turn = 1;
+    turn = 0;
+    phase = 0;
+    playerAmount = 0;
 }
 
-int Game::addPlayer()
+int Game::addPlayer(QWebSocket* socket)
 {
-    //wozu returned das hier playeramount?????
-    int playerAmount = players.size();
-    players.push_back(Player(playerAmount));
+    playerAmount += 1;
+    players<<Player(socket, playerAmount);
     return playerAmount;
 }
 
-void Game::runGame()
+string Game::runGame(int action)
 {
+    switch(phase)
+    //warten auf Spieler zu würfeln
+    case 0:
+        return "";
+        break;
+    //warten auf Spieler Feld zu kaufen
+    case 1:
+        return "";
+        break;
+    // warten auf Spieler Zug zu beenden
+    case 2:
+        return "";
+        break;
     //hierhin kommt die Spiellogik
     return;
 }
@@ -27,15 +41,17 @@ int Game::rollDice()
     return dices.rollDice();
 }
 
-void Game::calculateNewPosition(int rollresult)
+int Game::MoveToNewPosition(int rollresult)
 {
     currentPlayer.setPosition(currentPlayer.getPosition() + rollresult);
+    return currentPlayer.getPosition();
 }
 
 void Game::setCurrentPlayer(Player newPlayer)
 {
     currentPlayer = newPlayer;
 }
+
 
 Player Game::getCurrentPlayer()
 {
@@ -44,7 +60,6 @@ Player Game::getCurrentPlayer()
 
 Player Game::getNextPlayer()
 {
-    int playerAmount = players.size();
     if(playerAmount == 0)
     {
         return Player();
@@ -59,6 +74,17 @@ Player Game::getNextPlayer()
     {
         //Nächster bzw. erster Spieler wird ausgegeben
         return players[currentPlayerId + 1];
+    }
+}
+
+Player Game::getPlayer(QWebSocket* socket)
+{
+    for(Player player : players)
+    {
+        if(player.getSocket() == socket)
+        {
+            return player;
+        }
     }
 }
 

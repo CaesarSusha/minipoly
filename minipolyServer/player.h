@@ -1,14 +1,15 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-
+#include "QtWebSockets/qwebsocket.h"
 
 class Player
 {
 public:
     Player();
-    Player(int id);
+    Player(QWebSocket* socket, int id);
 
     int getId();
+    QWebSocket* getSocket();
 
     //Methoden zur Positionsanpassung im Verlauf des Spieles
     void setPosition(int position);
@@ -18,11 +19,12 @@ public:
     void setPurse(int amount);
     int getPurse();
 
+
 private:
     int id;
     int position;
     int purse;
-
+    QWebSocket* socket;
 };
 
 #endif // PLAYER_H

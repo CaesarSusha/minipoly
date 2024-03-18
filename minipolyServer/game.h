@@ -4,7 +4,8 @@
 #include "board.h"
 #include "player.h"
 #include "dice.h"
-#include <vector>
+#include <QtCore/QList>
+#include "QtWebSockets/qwebsocket.h"
 
 class Game
 {
@@ -15,20 +16,23 @@ public:
     //Objekt für das Spielfeld
     Board gameBoard;
 
-    int addPlayer();
-    void runGame();
+    int addPlayer(QWebSocket* socket);
+    string runGame(int action);
     int rollDice();
-    void calculateNewPosition(int rollresult);
+    int MoveToNewPosition(int rollresult);
     void setCurrentPlayer(Player newPlayer);
     Player getCurrentPlayer();
     Player getNextPlayer();
+    Player getPlayer(QWebSocket* socket);
     int getTurn();
 
 private:
     Player currentPlayer;
     int turn;
+    int phase;
+    int playerAmount;
     //Player Objekte für die Spieler
-    std::vector<Player> players;
+    QList<Player> players;
 };
 
 #endif // GAME_H

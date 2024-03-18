@@ -5,6 +5,7 @@
 #include <QtCore/QList>
 #include <QtCore/QByteArray>
 #include <game.h>
+#include <player.h>
 
 QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
@@ -35,7 +36,7 @@ private:
     explicit Server(quint16 port);
     QWebSocketServer *m_pWebSocketServer;
     QList<QWebSocket*> m_clients;
-    Game *game;
+    Game game;
 
 
 };

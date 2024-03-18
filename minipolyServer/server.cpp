@@ -7,6 +7,8 @@ QT_USE_NAMESPACE
 
 Server* Server::instance = nullptr;
 
+
+
 Server *Server::getInstance()
 {
     if(instance == nullptr)
@@ -24,6 +26,7 @@ Server::Server(quint16 port) :
     {
         connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &Server::onConnection);
     }
+    game = Game();
 }
 
 Server::~Server()
@@ -45,8 +48,12 @@ void Server::onConnection()
     qInfo() << m_clients.length();
     qInfo()<<"socketConnected:"<< pSocket;
 
+    //create new User
+    int playerId = game.addPlayer(pSocket);
+
     //Show new User
-    broadcastData("Player" + QString::number(m_clients.length()) + " joined.");
+    broadcastData("Player" + QString::number(playerId) + " joined.");
+
 
     //Debugging purpose
     //User 1 has bought a house
@@ -55,8 +62,8 @@ void Server::onConnection()
     // broadcastData("setOwner-23-3");
     // broadcastData("setOwner-9-3");
     //It is now Player 1s turn
-    broadcastData("setCurrentPlayer-1");
-    transmitData("setPlayerId-" + QString::number(m_clients.length()) , m_clients.at(m_clients.length()-1));
+    transmitData("setCurrentPlayer-" + QString::number(game.getCurrentPlayer().getId()) , pSocket);
+    transmitData("setPlayerId-" + QString::number(playerId) , pSocket);
     //game->addPlayer();
     //qInfo() << game->getCurrentPlayer().getId();
 }
@@ -73,12 +80,11 @@ void Server::handleReceivedData(QString data)
     if (data == "3")
     {
         //verstehe ich bei Gott nicht
-        //int rollResult = this->game->rollDice();
-        int rollResult = 4;
+        int rollResult = game.rollDice();
         broadcastData("setDice-" + QString::number(rollResult));
         // Trying to walk
-        //game->calculateNewPosition(rollResult);
-        //broadcastData("updatePosition-" + QString::number(game->getCurrentPlayer().getId()) + QString::number(rollResult));
+        int position = game.MoveToNewPosition(rollResult);
+        broadcastData("updatePosition-" + QString::number(game.getCurrentPlayer().getId()) + " -" + QString::number(position));
     }
 }
 
