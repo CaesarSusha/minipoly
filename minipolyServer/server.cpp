@@ -78,14 +78,12 @@ void Server::handleReceivedData(QString data)
     //Client has rolled the dice
     if (data == "3")
     {
-        //verstehe ich bei Gott nicht
-        //int rollResult = this->game->rollDice();
         int rollResult = 2;
         broadcastData("setDice-" + QString::number(rollResult));
         // Trying to walk
-        //HIerfür muss logic funktionieren
+        //Hierfür muss logik funktionieren
         //game->setNewPosition(rollResult);
-        // Ud dann muss das hier gebroadCasted werden,
+        // Und dann muss das hier gebroadCasted werden,
         broadcastData("moveCurrentPlayerToGridcellId-" + QString::number(rollResult));
     }
 }

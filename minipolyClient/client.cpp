@@ -73,6 +73,7 @@ void Client::handleReceivedData(QString data)
         int gridcellId = splitData[1].toInt();
         Client::coordinates coords = convertIdToCoordinates(gridcellId);
         m_mainWindow.moveCurrentPlayerToGridCoords(coords.x, coords.y);
+        m_mainWindow.update();
     }
 }
 

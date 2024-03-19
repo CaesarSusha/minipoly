@@ -57,7 +57,7 @@ void MainWindow::initGrid()
             }
             else
             {
-                grid[x][y]->drawCircle();
+                //grid[x][y]->drawCircle();
                 grid[x][y]->drawCircleFlag = false;
             }
 
@@ -123,9 +123,27 @@ void MainWindow::moveCurrentPlayerToGridCoords(int x, int y)
 {
     //draw a circle on gridcellId with the currentplayer color
     //grid[5][3]->setStyleSheet("color: "+ getColorFromPlayerId(currentPlayerId) + ";");
-    qInfo() << "current Player color: " << getColorFromPlayerId(currentPlayerId) + " (should be #ff00ff)";
-    grid[x][y]->setBrushColor(getColorFromPlayerId(currentPlayerId));
-    grid[x][y]->drawCircleFlag = true;
+    //grid[x][y]->setBrushColor(getColorFromPlayerId(currentPlayerId));
+    //grid[x][y]->setPlayerIconPosition(currentPlayerId);
+    //grid[x][y]->drawCircleFlag = true;
+
+    //TEST
+    grid[0][2]->addCircle(getColorFromPlayerId(1));
+    grid[0][2]->addCircle(getColorFromPlayerId(2));
+    grid[0][2]->addCircle(getColorFromPlayerId(3));
+    grid[0][2]->addCircle(getColorFromPlayerId(4));
+    grid[0][2]->addCircle(getColorFromPlayerId(5));
+    grid[0][2]->addCircle(getColorFromPlayerId(6));
+
+
+    grid[3][0]->addCircle(getColorFromPlayerId(1));
+    grid[3][0]->addCircle(getColorFromPlayerId(2));
+    grid[3][0]->addCircle(getColorFromPlayerId(3));
+    grid[3][0]->addCircle(getColorFromPlayerId(4));
+    grid[3][0]->addCircle(getColorFromPlayerId(5));
+    grid[3][0]->addCircle(getColorFromPlayerId(6));
+
+
 
 }
 
@@ -134,13 +152,17 @@ QString MainWindow::getColorFromPlayerId(int id)
     switch(id)
     {
     case 1:
-        return "#ff00ff";
+        return "#ff0000";
     case 2:
         return "#0000ff";
     case 3:
         return "#00ff00";
     case 4:
         return "#ffff00";
+    case 5:
+        return "#00ffff";
+    case 6:
+        return "#ff00ff";
     default:
         return "#ffffff";
     }

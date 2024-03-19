@@ -36,7 +36,5 @@ private:
     QWebSocketServer *m_pWebSocketServer;
     QList<QWebSocket*> m_clients;
     Game *game;
-
-
 };
 #endif // SERVER_H
