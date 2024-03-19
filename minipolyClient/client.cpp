@@ -30,7 +30,7 @@ void Client::onConnection()
     connect(&m_webSocket, &QWebSocket::textMessageReceived, this, &Client::handleReceivedData);
 
 
-    connect(m_mainWindow.grid[5][3], &QPushButton::clicked, this, [=]() {transmitData("3");});
+    connect(m_mainWindow.grid[5][3], &QPushButton::clicked, this, [=]() {transmitData("2");});
 
 }
 

@@ -27,7 +27,8 @@ QString Game::runGame(bool action)
         case 0:
         {
             //Ermittlung der neuen Position
-            int newPosition = (currentPlayer.getPosition() + dices.rollDice())%28;
+            int diceRoll = dices.rollDice();
+            int newPosition = (currentPlayer.getPosition() + diceRoll)%28;
             currentPlayer.setPosition(newPosition);
             Player owner = gameBoard.squares[newPosition].getOwner();
             if(owner.getId() == -1)
@@ -35,16 +36,17 @@ QString Game::runGame(bool action)
                 if(currentPlayer.getPurse() >= gameBoard.squares[newPosition].getPrice())
                 {
                     phase = 1;
-                    return "Price-" + QString::number(gameBoard.squares[newPosition].getPrice());
+                    return QString::number(diceRoll);
+                        //"Price-" + QString::number(gameBoard.squares[newPosition].getPrice());
                 }
                 phase = 2;
-                return "";
+                return QString::number(diceRoll);
             }
 
             if(currentPlayer.getId() == owner.getId())
             {
                 phase = 2;
-                return "";
+                return QString::number(diceRoll);
             }
             //Ermitteln der Miete
             int rent = gameBoard.squares[newPosition].getRent();
@@ -64,8 +66,13 @@ QString Game::runGame(bool action)
             }
             currentPlayer.setPurse(currentPlayer.getPurse() - rent);
             owner.setPosition(owner.getPurse() + rent);
+            if(currentPlayer.getPurse() < 0)
+            {
+                return "GameOver";
+            }
             phase = 2;
-            return "Rent-" + QString::number(rent);
+            return QString::number(diceRoll);
+                //"Rent-" + QString::number(rent);
         }
         //warten auf Spieler Feld zu kaufen
         case 1:
@@ -74,13 +81,13 @@ QString Game::runGame(bool action)
             if(action == false)
             {
                 phase = 2;
-                return "EndTurn";
+                return runGame(false);
             }
             //Feld kaufen
             gameBoard.squares[currentPlayer.getPosition()].setOwner(currentPlayer);
             return "EndTurn";
         }
-        //warten auf Spieler Zug zu beenden
+        //Zug beenden
         case 2:
         {
             //Neuen Zug einleiten
@@ -137,4 +144,9 @@ Player Game::getNextPlayer()
 int Game::getTurn()
 {
     return turn;
+}
+
+int Game::getPhase()
+{
+    return phase;
 }

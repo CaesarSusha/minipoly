@@ -24,6 +24,7 @@ public:
     Player getCurrentPlayer();
     Player getNextPlayer();
     int getTurn();
+    int getPhase();
 
 private:
     Player currentPlayer;

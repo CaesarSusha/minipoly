@@ -61,6 +61,8 @@ void Server::onConnection()
     // broadcastData("setOwner-16-3");
     // broadcastData("setOwner-23-3");
     // broadcastData("setOwner-9-3");
+
+    transmitData("setPlayerId-" + QString::number(playerId) , pSocket);
     //It is now Player 1s turn
     if(playerId == 2)
     {
@@ -71,7 +73,6 @@ void Server::onConnection()
     {
     transmitData("setCurrentPlayer-" + QString::number(game.getCurrentPlayer().getId()) , pSocket);
     }
-    transmitData("setPlayerId-" + QString::number(playerId) , pSocket);
     //game->addPlayer();
     //qInfo() << game->getCurrentPlayer().getId();
 }
@@ -85,15 +86,47 @@ void Server::onDisconnection()
 void Server::handleReceivedData(QString data)
 {
     qInfo()<<"Received data from client: " << data;
-    if (data == "3")
+    bool successfulConvert;
+    int clientCommand = data.toInt(&successfulConvert);
+    switch(clientCommand)
     {
-        //verstehe ich bei Gott nicht
-        int rollResult = game.rollDice();
-        broadcastData("setDice-" + QString::number(rollResult));
-        // Trying to walk
-        int position = game.MoveToNewPosition(rollResult);
-        broadcastData("updatePosition-" + QString::number(game.getCurrentPlayer().getId()) + " -" + QString::number(position));
+        //Kauf ablehnen
+        case 0:
+        {
+            if (game.getPhase() != 0)
+            {
+                QString result = game.runGame(false);
+            }
+            break;
+        }
+        //Kauf annehmen
+        case 1:
+        {
+            if (game.getPhase() != 0)
+            {
+                QString result = game.runGame(true);
+                broadcastData("setOwner-" + QString::number(game.getCurrentPlayer().getPosition()) + "-" + QString::number(game.getCurrentPlayer().getId()));
+            }
+            break;
+        }
+        //Würfeln
+        case 2:
+        {
+
+            if(game.getPhase() == 0)
+            {
+                QString result = game.runGame(false);
+                broadcastData("setDice-" + result);
+                broadcastData("updatePosition-" + QString::number(game.getCurrentPlayer().getId()) + "-" + QString::number(game.getCurrentPlayer().getPosition()));
+            }
+            break;
+        }
+        default:
+            break;
     }
+    //Chatfunktion
+    broadcastData(data);
+
 }
 
 void Server::broadcastData(QString data)
