@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include <QTcpServer>
 #include <QLabel>
+#include <QPainter>
 
 // Die Klasse erweitert den Pushbutton um eine x und y coordinate und einen state
 class GridCell : public QPushButton
@@ -14,10 +15,13 @@ public:
     virtual ~GridCell();
     //Ownership
     void setBorder(QString color);
-
     int x;
     int y;
-
+    void drawCircle();
+    void paintEvent(QPaintEvent *event);
+    void setBrushColor(QString newBrushColor);
+    bool drawCircleFlag;
+    QString brushColor;
 };
 
 #endif // GRIDCELL_H

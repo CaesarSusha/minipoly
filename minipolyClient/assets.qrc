@@ -3,7 +3,7 @@
         <file alias="40">assets/gridicons/T1.png</file>
         <file alias="70">assets/gridicons/P1.png</file>
         <file alias="04">assets/gridicons/T2.png</file>
-        <file alias="47">assets/gridicons/T3.png</file>
+        <file alias="37">assets/gridicons/T3.png</file>
         <file alias="73">assets/gridicons/T4.png</file>
         <file alias="00">assets/gridicons/P2.png</file>
         <file alias="07">assets/gridicons/P3.png</file>
@@ -20,13 +20,14 @@
         <file alias="06">assets/gridicons/D2.png</file>
         <file alias="17">assets/gridicons/E1.png</file>
         <file alias="27">assets/gridicons/E2.png</file>
-        <file alias="37">assets/gridicons/E3.png</file>
-        <file alias="57">assets/gridicons/F1.png</file>
-        <file alias="67">assets/gridicons/F2.png</file>
+        <file alias="47">assets/gridicons/F1.png</file>
+        <file alias="57">assets/gridicons/F2.png</file>
         <file alias="76">assets/gridicons/G1.png</file>
         <file alias="75">assets/gridicons/G2.png</file>
         <file alias="74">assets/gridicons/G3.png</file>
         <file alias="72">assets/gridicons/H1.png</file>
         <file alias="71">assets/gridicons/H2.png</file>
+        <file alias="67">assets/gridicons/F3.png</file>
+        <file alias="dice">assets/other/dice.svg</file>
     </qresource>
 </RCC>

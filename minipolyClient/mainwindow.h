@@ -7,6 +7,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QPixmap>
+#include <QPainter>
 #include <vector>
 
 // QT_BEGIN_NAMESPACE
@@ -37,6 +38,18 @@ public:
     int lastXPos;
     int lastYPos;
     void updateLastPos(int y, int rectHeight, int rectWidth);
+
+    // server data handling
+    void setOwner(int x, int y, int playerId);
+    QString getColorFromPlayerId(int playerId);
+    void setCurrentPlayer(int playerId);
+    void displayRolledDice(int dice);
+    void moveCurrentPlayerToGridCoords(int x, int y);
+
+    int myPlayerId;
+    int currentPlayerId;
+
+    //virtual void paintEvent(QPaintEvent *event);
 
 
 };

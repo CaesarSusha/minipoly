@@ -45,8 +45,25 @@ void Server::onConnection()
     qInfo() << m_clients.length();
     qInfo()<<"socketConnected:"<< pSocket;
 
-    //Show new User
-    transmitData("A user joined.");
+    // Broadcast new User
+    broadcastData("Player" + QString::number(m_clients.length()) + " joined.");
+    // Set PlayerId for specific client
+    transmitData("setPlayerId-" + QString::number(m_clients.length()) , m_clients.at(m_clients.length()-1));
+
+    //Debugging purpose
+    //User 1 has bought a house
+     broadcastData("setOwner-2-3");
+     broadcastData("setOwner-16-3");
+     broadcastData("setOwner-23-3");
+     broadcastData("setOwner-9-3");
+
+     broadcastData("setCurrentPlayer-1");
+     //broadcastData("moveCurrentPlayerToGridcellId-3");
+    //It is now Player 1s turn
+
+
+    //game->addPlayer();
+    //qInfo() << game->getCurrentPlayer().getId();
 }
 
 
@@ -58,15 +75,38 @@ void Server::onDisconnection()
 void Server::handleReceivedData(QString data)
 {
     qInfo()<<"Received data from client: " << data;
-    transmitData("i am the server. I got your data, client.");
+    //Client has rolled the dice
+    if (data == "3")
+    {
+        //verstehe ich bei Gott nicht
+        //int rollResult = this->game->rollDice();
+        int rollResult = 2;
+        broadcastData("setDice-" + QString::number(rollResult));
+        // Trying to walk
+        //HIerfür muss logic funktionieren
+        //game->setNewPosition(rollResult);
+        // Ud dann muss das hier gebroadCasted werden,
+        broadcastData("moveCurrentPlayerToGridcellId-" + QString::number(rollResult));
+    }
 }
 
-void Server::transmitData(QString data)
+void Server::broadcastData(QString data)
 {
-    qInfo()<<"Passing data to client: " << data;
+    qInfo()<<"Broadcasting data: " << data;
     for (QWebSocket *client : qAsConst(m_clients))
     {
         client->sendTextMessage(data);
     }
+}
+
+void Server::transmitData(QString data, QWebSocket *client)
+{
+    if (!client) {
+        qWarning() << "Invalid client specified.";
+        return;
+    }
+
+    qInfo() << "Passing data to client:" << data;
+    client->sendTextMessage(data);
 }
 

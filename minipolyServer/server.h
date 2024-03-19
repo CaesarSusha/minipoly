@@ -4,6 +4,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QList>
 #include <QtCore/QByteArray>
+#include <game.h>
 
 QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
@@ -24,7 +25,8 @@ private Q_SLOTS:
     void onConnection();
     void onDisconnection();
     void handleReceivedData(QString data);
-    void transmitData(QString data);
+    void broadcastData(QString data);
+    void transmitData(QString data, QWebSocket *client);
 
 private:
     //Singleton Server Instanz
@@ -33,6 +35,7 @@ private:
     explicit Server(quint16 port);
     QWebSocketServer *m_pWebSocketServer;
     QList<QWebSocket*> m_clients;
+    Game *game;
 
 
 };

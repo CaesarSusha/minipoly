@@ -7,6 +7,10 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+
+    //int playerIconWidth = 100;
+    //int playerIconWidth = 100;
+
     this->width = 1920;
     this->height = 1080;
     this->boardSize = 900;
@@ -16,6 +20,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     this->lastYPos = 0;
 
     initGrid();
+    grid[5][3]->setIcon(QIcon(QPixmap(":/dice")));
+    //grid[5][3]->setStyleSheet("color: "+ getColorFromPlayerId(currentPlayerId) + ";");
+
+
+
+
 }
 
 void MainWindow::initGrid()
@@ -36,11 +46,22 @@ void MainWindow::initGrid()
             grid[x][y]->setIcon(QIcon(QPixmap(iconPath)));
             grid[x][y]->setIconSize(QSize(rectWidth, rectHeight));
 
+
+
+
+            //disable buttons in the middle
             if (grid[x][y]->icon().isNull())
             {
+                grid[x][y]->setFlat(true);
                 grid[x][y]->setEnabled(false);
             }
-            qInfo() << "hallo " << grid[x][y]->icon();
+            else
+            {
+                grid[x][y]->drawCircle();
+                grid[x][y]->drawCircleFlag = false;
+            }
+
+            //qInfo() << "hallo " << grid[x][y]->icon();
             updateLastPos(y, rectHeight, rectWidth);
 
             //grid[x][y]->setEnabled(false);
@@ -69,6 +90,59 @@ void MainWindow::updateLastPos(int y, int rectHeight, int rectWidth)
     }
     else{
         lastXPos += rectWidth;
+    }
+}
+
+void MainWindow::setOwner(int x, int y, int playerId)
+{
+    grid[x][y]->setBorder(this->getColorFromPlayerId(playerId));
+}
+
+void MainWindow::setCurrentPlayer(int playerId)
+{
+    currentPlayerId = playerId;
+    if(currentPlayerId == this->myPlayerId)
+    {
+        grid[5][3]->setEnabled(true);
+        grid[4][3]->setText("Your Turn!");
+    }
+    else
+    {
+        grid[5][3]->setEnabled(false);
+        grid[4][3]->setText("Waiting...");
+    }
+}
+
+void MainWindow::displayRolledDice(int dice)
+{
+    grid[5][4]->setText(QString::number(dice));
+    grid[5][4]->setStyleSheet("color: "+ getColorFromPlayerId(currentPlayerId) + ";");
+}
+
+void MainWindow::moveCurrentPlayerToGridCoords(int x, int y)
+{
+    //draw a circle on gridcellId with the currentplayer color
+    //grid[5][3]->setStyleSheet("color: "+ getColorFromPlayerId(currentPlayerId) + ";");
+    qInfo() << "current Player color: " << getColorFromPlayerId(currentPlayerId) + " (should be #ff00ff)";
+    grid[x][y]->setBrushColor(getColorFromPlayerId(currentPlayerId));
+    grid[x][y]->drawCircleFlag = true;
+
+}
+
+QString MainWindow::getColorFromPlayerId(int id)
+{
+    switch(id)
+    {
+    case 1:
+        return "#ff00ff";
+    case 2:
+        return "#0000ff";
+    case 3:
+        return "#00ff00";
+    case 4:
+        return "#ffff00";
+    default:
+        return "#ffffff";
     }
 }
 
