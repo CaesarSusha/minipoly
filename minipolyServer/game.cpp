@@ -12,28 +12,84 @@ Game::Game()
 
 int Game::addPlayer(QWebSocket* socket)
 {
+    //Ermittlung einer neuen PlayerID
     playerAmount += 1;
+    //Anlegen eines neuen Spielers
     players<<Player(socket, playerAmount);
     return playerAmount;
 }
 
-string Game::runGame(int action)
+QString Game::runGame(bool action)
 {
     switch(phase)
+    {
     //warten auf Spieler zu würfeln
-    case 0:
-        return "";
-        break;
-    //warten auf Spieler Feld zu kaufen
-    case 1:
-        return "";
-        break;
-    // warten auf Spieler Zug zu beenden
-    case 2:
-        return "";
-        break;
-    //hierhin kommt die Spiellogik
-    return;
+        case 0:
+        {
+            //Ermittlung der neuen Position
+            int newPosition = (currentPlayer.getPosition() + dices.rollDice())%28;
+            currentPlayer.setPosition(newPosition);
+            Player owner = gameBoard.squares[newPosition].getOwner();
+            if(owner.getId() == -1)
+            {
+                if(currentPlayer.getPurse() >= gameBoard.squares[newPosition].getPrice())
+                {
+                    phase = 1;
+                    return "Price-" + QString::number(gameBoard.squares[newPosition].getPrice());
+                }
+                phase = 2;
+                return "";
+            }
+
+            if(currentPlayer.getId() == owner.getId())
+            {
+                phase = 2;
+                return "";
+            }
+            //Ermitteln der Miete
+            int rent = gameBoard.squares[newPosition].getRent();
+            int collection = gameBoard.squares[newPosition].getCollection();
+            bool fullCollection = true;
+            //Abfrage, ob dem Spieler die komplette Collection gehört
+            for (Square square : gameBoard.squares)
+            {
+                if(square.getCollection() == collection && square.getOwner().getId() != owner.getId())
+                {
+                    fullCollection = false;
+                }
+            }
+            if (fullCollection == true)
+            {
+                rent *= 2;
+            }
+            currentPlayer.setPurse(currentPlayer.getPurse() - rent);
+            owner.setPosition(owner.getPurse() + rent);
+            phase = 2;
+            return "Rent-" + QString::number(rent);
+        }
+        //warten auf Spieler Feld zu kaufen
+        case 1:
+        {
+            //Feld nicht kaufen
+            if(action == false)
+            {
+                phase = 2;
+                return "EndTurn";
+            }
+            //Feld kaufen
+            gameBoard.squares[currentPlayer.getPosition()].setOwner(currentPlayer);
+            return "EndTurn";
+        }
+        //warten auf Spieler Zug zu beenden
+        case 2:
+        {
+            //Neuen Zug einleiten
+            currentPlayer = getNextPlayer();
+            phase = 0;
+            return "StartTurn-" + QString::number(currentPlayer.getId());
+        }
+    }
+    return "";
 }
 
 int Game::rollDice()
@@ -62,6 +118,7 @@ Player Game::getNextPlayer()
 {
     if(playerAmount == 0)
     {
+        //Keine Spieler vorhanden
         return Player();
     }
     int currentPlayerId = currentPlayer.getId();
@@ -74,17 +131,6 @@ Player Game::getNextPlayer()
     {
         //Nächster bzw. erster Spieler wird ausgegeben
         return players[currentPlayerId + 1];
-    }
-}
-
-Player Game::getPlayer(QWebSocket* socket)
-{
-    for(Player player : players)
-    {
-        if(player.getSocket() == socket)
-        {
-            return player;
-        }
     }
 }
 

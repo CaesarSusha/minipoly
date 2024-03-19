@@ -62,7 +62,15 @@ void Server::onConnection()
     // broadcastData("setOwner-23-3");
     // broadcastData("setOwner-9-3");
     //It is now Player 1s turn
+    if(playerId == 2)
+    {
+        game.setCurrentPlayer(game.getNextPlayer());
+        broadcastData("setCurrentPlayer-" + QString::number(game.getCurrentPlayer().getId()));
+    }
+    else
+    {
     transmitData("setCurrentPlayer-" + QString::number(game.getCurrentPlayer().getId()) , pSocket);
+    }
     transmitData("setPlayerId-" + QString::number(playerId) , pSocket);
     //game->addPlayer();
     //qInfo() << game->getCurrentPlayer().getId();

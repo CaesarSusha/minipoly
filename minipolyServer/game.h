@@ -17,13 +17,12 @@ public:
     Board gameBoard;
 
     int addPlayer(QWebSocket* socket);
-    string runGame(int action);
+    QString runGame(bool action);
     int rollDice();
     int MoveToNewPosition(int rollresult);
     void setCurrentPlayer(Player newPlayer);
     Player getCurrentPlayer();
     Player getNextPlayer();
-    Player getPlayer(QWebSocket* socket);
     int getTurn();
 
 private:
