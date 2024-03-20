@@ -133,6 +133,7 @@ Player Game::getNextPlayer()
     {
         //Letzter Spieler in der Reihe war am Zug -> erster Spieler beginnt seinen Zug
         return players[0];
+        turn += 1;
     }
     else
     {
