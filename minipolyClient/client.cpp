@@ -48,6 +48,20 @@ void Client::handleReceivedData(QString data)
     {
         m_mainWindow.myPlayerId = splitData[1].toInt();
         qInfo() << "myPlayerId: " << m_mainWindow.myPlayerId;
+        for (int i = 1; i < m_mainWindow.myPlayerId; i++)
+        {
+            m_mainWindow.player[i].circleId = m_mainWindow.grid[7][0]->addCircle(m_mainWindow.getColorFromPlayerId(i), i);
+        }
+    }
+
+    if(data.left(6) == "Player" && data.right(8) == " joined.")
+    {
+        bool successfulConvert = false;
+        int newPlayer = data.mid(6,1).toInt(&successfulConvert);
+        if(successfulConvert)
+        {
+            m_mainWindow.player[newPlayer].circleId = m_mainWindow.grid[7][0]->addCircle(m_mainWindow.getColorFromPlayerId(newPlayer), newPlayer);
+        }
     }
 
     if(splitData[0] == "setOwner")
@@ -68,6 +82,13 @@ void Client::handleReceivedData(QString data)
         m_mainWindow.displayRolledDice(splitData[1].toInt());
     }
 
+    if (splitData[0] == "moveCurrentPlayerToGridcellId")
+    {
+        int gridcellId = splitData[1].toInt();
+        Client::coordinates coords = convertIdToCoordinates(gridcellId);
+        m_mainWindow.moveCurrentPlayerToGridCoords(coords.x, coords.y);
+        m_mainWindow.update();
+    }
 }
 
 void Client::transmitData(QString data)

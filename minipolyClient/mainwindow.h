@@ -9,6 +9,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <vector>
+#include "player.h"
 
 // QT_BEGIN_NAMESPACE
 // namespace Ui { class MainWindow; }
@@ -48,9 +49,9 @@ public:
 
     int myPlayerId;
     int currentPlayerId;
+    Player player[7];
 
     //virtual void paintEvent(QPaintEvent *event);
-
 
 };
 

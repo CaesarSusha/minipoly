@@ -97,7 +97,7 @@ void Server::handleReceivedData(QString data)
             {
                 QString result = game.runGame(false);
             }
-            break;
+            return;
         }
         //Kauf annehmen
         case 1:
@@ -107,7 +107,7 @@ void Server::handleReceivedData(QString data)
                 QString result = game.runGame(true);
                 broadcastData("setOwner-" + QString::number(game.getCurrentPlayer().getPosition()) + "-" + QString::number(game.getCurrentPlayer().getId()));
             }
-            break;
+            return;
         }
         //Würfeln
         case 2:
@@ -117,9 +117,9 @@ void Server::handleReceivedData(QString data)
             {
                 QString result = game.runGame(false);
                 broadcastData("setDice-" + result);
-                broadcastData("updatePosition-" + QString::number(game.getCurrentPlayer().getId()) + "-" + QString::number(game.getCurrentPlayer().getPosition()));
+                broadcastData("moveCurrentPlayerToGridcellId-" + QString::number(game.getCurrentPlayer().getPosition()));
             }
-            break;
+            return;
         }
         default:
             break;

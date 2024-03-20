@@ -16,12 +16,14 @@ SOURCES += \
     client.cpp \
     gridcell.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    player.cpp
 
 HEADERS += \
     client.h \
     gridcell.h \
-    mainwindow.h
+    mainwindow.h \
+    player.h
 
 FORMS += \
     mainwindow.ui
