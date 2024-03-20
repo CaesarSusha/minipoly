@@ -56,6 +56,7 @@ void Server::onConnection()
      broadcastData("setOwner-16-3");
      broadcastData("setOwner-23-3");
      broadcastData("setOwner-9-3");
+     broadcastData("setOwner-6-3");
 
      broadcastData("setCurrentPlayer-1");
      //broadcastData("moveCurrentPlayerToGridcellId-3");
