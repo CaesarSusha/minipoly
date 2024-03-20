@@ -23,7 +23,7 @@ public:
     //Ownership
     void setBorder(QString color);
     void setBrushColor(QString newBrushColor);
-    void addCircle(const QString &brushColor);
+    void addCircle(const QString &brushColor, const int player);
     void paintEvent(QPaintEvent *event) override;
     bool drawCircleFlag;
 

@@ -30,15 +30,26 @@ void GridCell::setBrushColor(QString newBrushColor)
 void GridCell::calculateIconPositions()
 {
     // Total number of circles in a row/column
-    int totalCircles = 3;
+    int totalCirclesX;
+    int totalCirclesY;
+    if(this->width() > this->height())
+    {
+        totalCirclesX = 3;
+        totalCirclesY = 2;
+    }
+    else
+    {
+        totalCirclesX = 2;
+        totalCirclesY = 3;
+    }
 
     // Calculate the space between circles
-    int spaceBetweenCirclesX = this->width() / (totalCircles + 1);
-    int spaceBetweenCirclesY = this->height() / (totalCircles + 1);
+    int spaceBetweenCirclesX = this->width() / (totalCirclesX + 1);
+    int spaceBetweenCirclesY = this->height() / (totalCirclesY + 1);
 
     // Calculate the positions for each circle
-    for (int i = 1; i <= totalCircles; ++i) {
-        for (int j = 1; j <= totalCircles; ++j) {
+    for (int i = 1; i <= totalCirclesX; ++i) {
+        for (int j = 1; j <= totalCirclesY; ++j) {
             // Calculate the x and y positions of the circle center
             int xPos = i * spaceBetweenCirclesX;
             int yPos = j * spaceBetweenCirclesY;
@@ -48,19 +59,17 @@ void GridCell::calculateIconPositions()
     }
 }
 
-void GridCell::addCircle(const QString &brushColor)
+void GridCell::addCircle(const QString &brushColor, const int player)
 {
     calculateIconPositions();
 
     CircleProperties circle;
     circle.brushColor = brushColor;
 
-    // Assign circle positions from the calculated positions
-    for (const auto &pos : iconPositions)
-    {
-        circle.circlePosition = pos;
-        circles.append(circle);
-    }
+    // Assign circle positions from the calculated positions    
+    circle.circlePosition = iconPositions[player];
+    circles.append(circle);
+
     this->drawCircleFlag = true;
     update(); // Trigger repainting of the widget
 }

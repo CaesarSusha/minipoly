@@ -4,7 +4,7 @@ Game::Game()
 {
     dices = Dice(6);
     gameBoard = Board();
-    currentPlayer = NULL;
+    currentPlayer = Player();
     turn = 1;
 }
 

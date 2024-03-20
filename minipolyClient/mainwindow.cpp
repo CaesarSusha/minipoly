@@ -128,20 +128,20 @@ void MainWindow::moveCurrentPlayerToGridCoords(int x, int y)
     //grid[x][y]->drawCircleFlag = true;
 
     //TEST
-    grid[0][2]->addCircle(getColorFromPlayerId(1));
-    grid[0][2]->addCircle(getColorFromPlayerId(2));
-    grid[0][2]->addCircle(getColorFromPlayerId(3));
-    grid[0][2]->addCircle(getColorFromPlayerId(4));
-    grid[0][2]->addCircle(getColorFromPlayerId(5));
-    grid[0][2]->addCircle(getColorFromPlayerId(6));
+    grid[0][2]->addCircle(getColorFromPlayerId(1), 1);
+    grid[0][2]->addCircle(getColorFromPlayerId(2), 2);
+    grid[0][2]->addCircle(getColorFromPlayerId(3), 3);
+    grid[0][2]->addCircle(getColorFromPlayerId(4), 4);
+    grid[0][2]->addCircle(getColorFromPlayerId(5), 5);
+    grid[0][2]->addCircle(getColorFromPlayerId(6), 6);
 
 
-    grid[3][0]->addCircle(getColorFromPlayerId(1));
-    grid[3][0]->addCircle(getColorFromPlayerId(2));
-    grid[3][0]->addCircle(getColorFromPlayerId(3));
-    grid[3][0]->addCircle(getColorFromPlayerId(4));
-    grid[3][0]->addCircle(getColorFromPlayerId(5));
-    grid[3][0]->addCircle(getColorFromPlayerId(6));
+    grid[3][0]->addCircle(getColorFromPlayerId(1), 1);
+    grid[3][0]->addCircle(getColorFromPlayerId(2), 2);
+    grid[3][0]->addCircle(getColorFromPlayerId(3), 3);
+    grid[3][0]->addCircle(getColorFromPlayerId(4), 4);
+    grid[3][0]->addCircle(getColorFromPlayerId(5), 5);
+    grid[3][0]->addCircle(getColorFromPlayerId(6), 6);
 
 
 
