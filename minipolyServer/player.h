@@ -19,7 +19,6 @@ public:
     void setPurse(int amount);
     int getPurse();
 
-
 private:
     int id;
     int position;

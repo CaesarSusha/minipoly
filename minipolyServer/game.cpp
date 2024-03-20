@@ -115,7 +115,6 @@ void Game::setCurrentPlayer(Player newPlayer)
     currentPlayer = newPlayer;
 }
 
-
 Player Game::getCurrentPlayer()
 {
     return currentPlayer;

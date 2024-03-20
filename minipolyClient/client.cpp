@@ -50,7 +50,7 @@ void Client::handleReceivedData(QString data)
         qInfo() << "myPlayerId: " << m_mainWindow.myPlayerId;
     }
 
-    if(splitData[0] == "changeOwner")
+    if(splitData[0] == "setOwner")
     {
         int gridcellId = splitData[1].toInt();
         Client::coordinates coords = convertIdToCoordinates(gridcellId);
