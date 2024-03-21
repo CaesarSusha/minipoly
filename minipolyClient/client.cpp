@@ -31,6 +31,8 @@ void Client::onConnection()
 
 
     connect(m_mainWindow.grid[5][3], &QPushButton::clicked, this, [=]() {transmitData("2");});
+    connect(m_mainWindow.grid[1][1], &QPushButton::clicked, this, [=]() {transmitData("0");});
+    connect(m_mainWindow.grid[1][2], &QPushButton::clicked, this, [=]() {transmitData("1");});
 
 }
 
@@ -75,6 +77,8 @@ void Client::handleReceivedData(QString data)
     if(splitData[0] == "setCurrentPlayer")
     {
         m_mainWindow.setCurrentPlayer(splitData[1].toInt());
+        //Zum testen
+        transmitData("2");
     }
 
     if(splitData[0] == "setDice")
@@ -83,11 +87,27 @@ void Client::handleReceivedData(QString data)
     }
 
     if (splitData[0] == "moveCurrentPlayerToGridcellId")
-    {
+    {        
         int gridcellId = splitData[1].toInt();
         Client::coordinates coords = convertIdToCoordinates(gridcellId);
         m_mainWindow.moveCurrentPlayerToGridCoords(coords.x, coords.y);
         m_mainWindow.update();
+        //Zum testen
+        transmitData("1");
+    }
+
+    if (splitData[0] == "setPurse")
+    {
+        int purse = splitData[1].toInt();
+        int playerId = splitData[2].toInt();
+        m_mainWindow.setPurse(purse, playerId);
+    }
+
+    if (splitData[0] == "setGameOver")
+    {
+        m_mainWindow.grid[5][3]->setEnabled(false);
+        m_mainWindow.grid[1][1]->setEnabled(false);
+        m_mainWindow.grid[1][2]->setEnabled(false);
     }
 }
 

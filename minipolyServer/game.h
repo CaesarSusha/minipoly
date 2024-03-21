@@ -6,6 +6,8 @@
 #include "dice.h"
 #include <QtCore/QList>
 #include "QtWebSockets/qwebsocket.h"
+#include <QTextStream>
+#include <QFile>
 
 class Game
 {
@@ -31,8 +33,11 @@ private:
     int turn;
     int phase;
     int playerAmount;
+    QString squareBought;
     //Player Objekte für die Spieler
     QList<Player> players;
+    void endGame();
+    void writeCSV(QString filename, QString content);
 };
 
 #endif // GAME_H

@@ -10,6 +10,7 @@ public:
     int positionX;
     int positionY;
     int circleId;
+    int purse;
 };
 
 #endif // PLAYER_H

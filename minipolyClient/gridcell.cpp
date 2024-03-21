@@ -78,7 +78,7 @@ int GridCell::addCircle(const QString &brushColor, const int player)
 void GridCell::removeCircle(int circleId)
 
 {
-    circles.removeAt(circleId);
+    circles.removeAt(0);
 }
 
 void GridCell::paintEvent(QPaintEvent *event)

@@ -46,6 +46,7 @@ public:
     void setCurrentPlayer(int playerId);
     void displayRolledDice(int dice);
     void moveCurrentPlayerToGridCoords(int x, int y);
+    void setPurse(int purse, int playerId);
 
     int myPlayerId;
     int currentPlayerId;

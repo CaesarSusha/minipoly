@@ -107,11 +107,15 @@ void MainWindow::setCurrentPlayer(int playerId)
     if(currentPlayerId == this->myPlayerId)
     {
         grid[5][3]->setEnabled(true);
+        grid[1][1]->setEnabled(true);
+        grid[1][2]->setEnabled(true);
         grid[4][3]->setText("Your Turn!");
     }
     else
     {
         grid[5][3]->setEnabled(false);
+        grid[1][1]->setEnabled(false);
+        grid[1][2]->setEnabled(false);
         grid[4][3]->setText("Waiting...");
     }
 }
@@ -154,6 +158,17 @@ void MainWindow::moveCurrentPlayerToGridCoords(int x, int y)
 
 
 
+}
+
+void MainWindow::setPurse(int purse, int playerId)
+{
+    for(Player playerCount : player)
+    {
+        if(playerCount.playerId = playerId)
+        {
+            playerCount.purse = purse;
+        }
+    }
 }
 
 QString MainWindow::getColorFromPlayerId(int id)

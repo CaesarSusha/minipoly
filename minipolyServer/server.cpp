@@ -51,9 +51,6 @@ void Server::onConnection()
     //create new User
     int playerId = game.addPlayer(pSocket);
 
-    //Show new User
-    broadcastData("Player" + QString::number(playerId) + " joined.");
-
 
     //Debugging purpose
     //User 1 has bought a house
@@ -63,6 +60,9 @@ void Server::onConnection()
     // broadcastData("setOwner-9-3");
 
     transmitData("setPlayerId-" + QString::number(playerId) , pSocket);
+
+    //Show new User
+    broadcastData("Player" + QString::number(playerId) + " joined.");
     //It is now Player 1s turn
     if(playerId == 2)
     {
@@ -88,41 +88,68 @@ void Server::handleReceivedData(QString data)
     qInfo()<<"Received data from client: " << data;
     bool successfulConvert;
     int clientCommand = data.toInt(&successfulConvert);
-    switch(clientCommand)
+    if(game.getCurrentPlayer().getId() == -1 || game.getTurn() == -1)
     {
-        //Kauf ablehnen
-        case 0:
+    return;
+    }
+    if(successfulConvert)
+    {
+        switch(clientCommand)
         {
-            if (game.getPhase() != 0)
+            //Kauf ablehnen
+            case 0:
             {
-                QString result = game.runGame(false);
+                if (game.getPhase() != 0)
+                {
+                    QString result = game.runGame(false);
+                    QStringList  splitResult = result.split("%");
+                    for(QString part : splitResult)
+                    {
+                        if(part != "")
+                        {
+                            broadcastData(part);
+                        }
+                    }
+                }
+                return;
             }
-            return;
-        }
-        //Kauf annehmen
-        case 1:
-        {
-            if (game.getPhase() != 0)
+            //Kauf annehmen
+            case 1:
             {
-                QString result = game.runGame(true);
-                broadcastData("setOwner-" + QString::number(game.getCurrentPlayer().getPosition()) + "-" + QString::number(game.getCurrentPlayer().getId()));
+                if (game.getPhase() != 0)
+                {
+                    QString result = game.runGame(true);
+                    QStringList  splitResult = result.split("%");
+                    for(QString part : splitResult)
+                    {
+                        if(part != "")
+                        {
+                            broadcastData(part);
+                        }
+                    }
+                }
+                return;
             }
-            return;
-        }
-        //Würfeln
-        case 2:
-        {
-
-            if(game.getPhase() == 0)
+            //Würfeln
+            case 2:
             {
-                QString result = game.runGame(false);
-                broadcastData("setDice-" + result);
-                broadcastData("moveCurrentPlayerToGridcellId-" + QString::number(game.getCurrentPlayer().getPosition()));
+                if(game.getPhase() == 0)
+                {
+                    QString result = game.runGame(false);
+                    QStringList  splitResult = result.split("%");
+                    for(QString part : splitResult)
+                    {
+                        if(part != "")
+                        {
+                            broadcastData(part);
+                        }
+                    }
+                }
+                return;
             }
-            return;
+            default:
+                break;
         }
-        default:
-            break;
     }
     //Chatfunktion
     broadcastData(data);

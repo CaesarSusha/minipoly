@@ -8,12 +8,19 @@ Square:: Square()
     this->owner = Player();
 }
 
-Square::Square(int collection, int price, int rent)
+Square::Square(int collection, int price, int rent, bool buyable)
 {
     this->collection = collection;
     this->price = price;
     this->rent = rent;
-    this->owner = Player();
+    if(buyable)
+    {
+        this->owner = Player();
+    }
+    else
+    {
+        this->owner = Player(0, -2);
+    }
 }
 
 void Square::setOwner(Player newOwner)

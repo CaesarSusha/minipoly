@@ -6,7 +6,7 @@ class Square
 {
 public:
     Square();
-    Square(int collection, int price, int rent);
+    Square(int collection, int price, int rent, bool buyable = true);
     void setOwner(Player newOwner);
     Player getOwner();
     int getCollection();

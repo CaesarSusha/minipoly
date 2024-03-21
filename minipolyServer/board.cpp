@@ -9,10 +9,10 @@ Board::Board()
 void Board::initializeBoard()
 {
     //Die 4 Ecken des Spielbrettes
-    squares[0] = Square(0,0,0);
-    squares[7] = Square(0,0,0);
-    squares[14] = Square(0,0,0);
-    squares[21] = Square(0,0,0);
+    squares[0] = Square(0,0,0, false);
+    squares[7] = Square(0,0,0, false);
+    squares[14] = Square(0,0,0, false);
+    squares[21] = Square(0,0,0, false);
     //Collection 9: Transportmittel (alle 4 Seiten)
     squares[3] = Square(9,1000,100);
     squares[11] = Square(9,1000,100);
