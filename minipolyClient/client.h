@@ -35,7 +35,8 @@ private Q_SLOTS:
 
 private:
     QWebSocket m_webSocket;
-    MainWindow m_mainWindow;
+    MainWindow m_mainWindow;    
+    bool debug;
 };
 
 #endif // CLIENT_H

@@ -59,7 +59,7 @@ void GridCell::calculateIconPositions()
     }
 }
 
-int GridCell::addCircle(const QString &brushColor, const int player)
+void GridCell::addCircle(const QString &brushColor, const int player)
 {
     calculateIconPositions();
 
@@ -67,18 +67,17 @@ int GridCell::addCircle(const QString &brushColor, const int player)
     circle.brushColor = brushColor;
 
     // Assign circle positions from the calculated positions    
-    circle.circlePosition = iconPositions[player];
+    circle.circlePosition = iconPositions[player-1];
     circles.append(circle);
 
     this->drawCircleFlag = true;
     update(); // Trigger repainting of the widget
-    return circles.size() - 1;
 }
 
-void GridCell::removeCircle(int circleId)
+void GridCell::removeCircle()
 
 {
-    circles.removeAt(0);
+    circles.removeFirst();
 }
 
 void GridCell::paintEvent(QPaintEvent *event)

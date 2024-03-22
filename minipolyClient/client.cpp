@@ -14,6 +14,7 @@ Client::Client(const QUrl &url, QObject *parent) : QObject(parent)
 
     // Show the main window when the client is started
     m_mainWindow.show();
+    debug = true;
 }
 
 Client::~Client()
@@ -52,7 +53,7 @@ void Client::handleReceivedData(QString data)
         qInfo() << "myPlayerId: " << m_mainWindow.myPlayerId;
         for (int i = 1; i < m_mainWindow.myPlayerId; i++)
         {
-            m_mainWindow.player[i].circleId = m_mainWindow.grid[7][0]->addCircle(m_mainWindow.getColorFromPlayerId(i), i);
+            m_mainWindow.grid[7][0]->addCircle(m_mainWindow.getColorFromPlayerId(i), i);
         }
     }
 
@@ -62,7 +63,7 @@ void Client::handleReceivedData(QString data)
         int newPlayer = data.mid(6,1).toInt(&successfulConvert);
         if(successfulConvert)
         {
-            m_mainWindow.player[newPlayer].circleId = m_mainWindow.grid[7][0]->addCircle(m_mainWindow.getColorFromPlayerId(newPlayer), newPlayer);
+            m_mainWindow.grid[7][0]->addCircle(m_mainWindow.getColorFromPlayerId(newPlayer), newPlayer);
         }
     }
 
@@ -78,7 +79,10 @@ void Client::handleReceivedData(QString data)
     {
         m_mainWindow.setCurrentPlayer(splitData[1].toInt());
         //Zum testen
-        transmitData("2");
+        if(debug && m_mainWindow.currentPlayerId == m_mainWindow.myPlayerId)
+        {
+            transmitData("2");
+        }
     }
 
     if(splitData[0] == "setDice")
@@ -93,7 +97,10 @@ void Client::handleReceivedData(QString data)
         m_mainWindow.moveCurrentPlayerToGridCoords(coords.x, coords.y);
         m_mainWindow.update();
         //Zum testen
-        transmitData("1");
+        if(debug && m_mainWindow.currentPlayerId == m_mainWindow.myPlayerId)
+        {
+            transmitData("1");
+        }
     }
 
     if (splitData[0] == "setPurse")

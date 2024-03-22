@@ -31,12 +31,12 @@ QString Game::runGame(bool action)
             int diceRoll = dices.rollDice();
             if(currentPlayer.getPosition() + diceRoll > 28)
             {
-                currentPlayer.setPurse(currentPlayer.getPurse() + 200);
+                currentPlayer.setPurse(currentPlayer.getPurse() + 50);
                 result = "setPurse-" + QString::number(currentPlayer.getPurse()) + "-" + QString::number(currentPlayer.getId()) + "%";
             }
             int newPosition = (currentPlayer.getPosition() + diceRoll)%28;
             currentPlayer.setPosition(newPosition);
-            result += "moveCurrentPlayerToGridcellId-" + QString::number(getCurrentPlayer().getPosition()) + "%" + "setDice-" + QString::number(diceRoll)+ "%";
+            result += "moveCurrentPlayerToGridcellId-" + QString::number(newPosition) + "%" + "setDice-" + QString::number(diceRoll)+ "%";
             Player owner = gameBoard.squares[newPosition].getOwner();
             if(owner.getId() == -1)
             {
@@ -77,21 +77,24 @@ QString Game::runGame(bool action)
                 rent *= 2;
             }
             currentPlayer.setPurse(currentPlayer.getPurse() - rent);
+            int ownerId = 0;
             for(Player player : players)
             {
                 if(player.getId() == owner.getId())
                 {
-                    player.setPurse(player.getPurse() + rent);
+                    break;
                 }
+                ownerId += 1;
             }
+            players[ownerId].setPurse(players[ownerId].getPurse() + rent);
             result = "setPurse-" + QString::number(currentPlayer.getPurse()) + "-" + QString::number(currentPlayer.getId()) + "%" +
-                     "setPurse-" + QString::number(owner.getPurse()) + "-" + QString::number(owner.getId()) + "%" +
+                     "setPurse-" + QString::number(players[ownerId].getPurse()) + "-" + QString::number(owner.getId()) + "%" +
                      "moveCurrentPlayerToGridcellId-" + QString::number(getCurrentPlayer().getPosition()) + "%" +
                      "setDice-" + QString::number(diceRoll)+ "%";
             if(currentPlayer.getPurse() < 0)
             {
                 endGame();
-                return "setGameOver";
+                return result + "setGameOver";
             }
             phase = 2;
             return result + runGame(false);
@@ -124,10 +127,13 @@ QString Game::runGame(bool action)
             {
                 content += "\t SquareBought: " + squareBought;
             }
-            for(Player player : players)
+            /*for(Player player : players)
             {
-                content += "\t Player" + QString::number(player.getId()) + " " + QString::number(player.getPurse());
-            }
+                if(player.getId() != currentPlayer.getId())
+                {
+                    content += "\t Player" + QString::number(player.getId()) + " " + QString::number(player.getPurse());
+                }
+            }*/
             content += "\n";
             writeCSV("protocol", content);
             //Neuen Zug einleiten            
@@ -217,14 +223,15 @@ void Game::endGame()
     QString content = "Turn: " + QString::number(turn) + "\t Player" + QString::number(currentPlayer.getId()) + "\t Purse: " + QString::number(currentPlayer.getPurse()) +
                       "\t Square: " +  QString::number(currentPlayer.getPosition()) + "\n\n\n";
     writeCSV("protocol", content);
+    int winner = players[0].getId() - 1;
     for(Player player : players)
     {
-        if(player.getPurse() > 0)
+        if(player.getPurse() > players[winner].getPurse())
         {
-            content = "Player" + QString::number(player.getId()) + "\t Purse: " + QString::number(player.getPurse()) + "\n";
-            break;
+            winner = player.getId() - 1;
         }
     }
+    content = "Player" + QString::number(players[winner].getId()) + "\t Purse: " + QString::number(players[winner].getPurse()) + "\n";
     writeCSV("highscore", content);
     turn = -1;
 }

@@ -9,7 +9,6 @@ public:
     int playerId;
     int positionX;
     int positionY;
-    int circleId;
     int purse;
 };
 

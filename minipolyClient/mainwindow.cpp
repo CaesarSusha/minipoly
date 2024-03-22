@@ -43,7 +43,7 @@ void MainWindow::initGrid()
             int rectHeight = determineHeight(x);
             int boardStartX = (width-boardSize)/2;
             int boardStartY = (height-boardSize)/4;
-            grid[x][y]->setGeometry(QRect(boardStartX +(lastXPos), boardStartY +(lastYPos), rectWidth, rectHeight));
+            grid[x][y]->setGeometry(QRect(boardStartX +(lastXPos), boardStartY + (lastYPos), rectWidth, rectHeight));
 
             QString iconPath = ":/" + QString::number(x) + QString::number(y);
             grid[x][y]->setIcon(QIcon(QPixmap(iconPath)));
@@ -134,9 +134,9 @@ void MainWindow::moveCurrentPlayerToGridCoords(int x, int y)
     //grid[x][y]->setPlayerIconPosition(currentPlayerId);
     //grid[x][y]->drawCircleFlag = true;
     //remove old circle
-    grid[player[currentPlayerId].positionX][player[currentPlayerId].positionY]->removeCircle( player[currentPlayerId].circleId);
+    grid[player[currentPlayerId].positionX][player[currentPlayerId].positionY]->removeCircle();
     //add new circle
-    player[currentPlayerId].circleId = grid[x][y]->addCircle(getColorFromPlayerId(currentPlayerId), currentPlayerId);
+    grid[x][y]->addCircle(getColorFromPlayerId(currentPlayerId), currentPlayerId);
     //update player
     player[currentPlayerId].positionX = x;
     player[currentPlayerId].positionY = y;
