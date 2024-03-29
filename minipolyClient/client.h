@@ -31,7 +31,6 @@ private Q_SLOTS:
     void handleReceivedData(QString data);
     void transmitData(QString data);
     coordinates convertIdToCoordinates(int gridcellId);
-    coordinates manualConvertIdToCoordinates(int gridcellId);
 
 private:
     QWebSocket m_webSocket;

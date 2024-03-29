@@ -16,7 +16,7 @@ GridCell::~GridCell()
 
 }
 
-//wenn ein Spieler ein Gebäude gekauft hat, bekommt es die Border in seiner Color
+// wenn ein Spieler ein Gebäude gekauft hat, bekommt es die Border in seiner Color
 void GridCell::setBorder(QString color)
 {
     this->setStyleSheet("border: 4px solid " + color + ";");
@@ -29,7 +29,7 @@ void GridCell::setBrushColor(QString newBrushColor)
 
 void GridCell::calculateIconPositions()
 {
-    // Total number of circles in a row/column
+    // Gesamtzahl der Kreise in einer Zeile/Spalte
     int totalCirclesX;
     int totalCirclesY;
     if(this->width() > this->height())
@@ -43,14 +43,14 @@ void GridCell::calculateIconPositions()
         totalCirclesY = 3;
     }
 
-    // Calculate the space between circles
+    // Abstand zwischen den Kreisen berechnen
     int spaceBetweenCirclesX = this->width() / (totalCirclesX + 1);
     int spaceBetweenCirclesY = this->height() / (totalCirclesY + 1);
 
-    // Calculate the positions for each circle
+    // Position für jeden Kreis berechnen
     for (int i = 1; i <= totalCirclesX; ++i) {
         for (int j = 1; j <= totalCirclesY; ++j) {
-            // Calculate the x and y positions of the circle center
+            // x- und y-Position des Kreismittelpunkts berechnen
             int xPos = i * spaceBetweenCirclesX;
             int yPos = j * spaceBetweenCirclesY;
 
@@ -66,12 +66,12 @@ void GridCell::addCircle(const QString &brushColor, const int player)
     CircleProperties circle;
     circle.brushColor = brushColor;
 
-    // Assign circle positions from the calculated positions    
+    // Zuweisen von Kreispositionen aus den berechneten Positionen
     circle.circlePosition = iconPositions[player-1];
     circles.append(circle);
 
     this->drawCircleFlag = true;
-    update(); // Trigger repainting of the widget
+    update(); // erneutes Zeichnen des Widget auslösen
 }
 
 void GridCell::removeCircle()
@@ -82,8 +82,7 @@ void GridCell::removeCircle()
 
 void GridCell::paintEvent(QPaintEvent *event)
 {
-    QPushButton::paintEvent(event); // Call the base class implementation first
-
+    QPushButton::paintEvent(event); // Zuerst die Implementierung der Basisklasse aufrufen
     QPainter painter(this);
 
     for (const auto &circle : circles)
@@ -93,46 +92,8 @@ void GridCell::paintEvent(QPaintEvent *event)
         painter.setPen(pen);
         painter.setBrush(QColor(circle.brushColor));
 
-        int diameter = qMin(20, 20); // Circle diameter
+        int diameter = qMin(20, 20);
         QPoint circlePosition = circle.circlePosition;
         painter.drawEllipse(circlePosition.x() - diameter / 2, circlePosition.y() - diameter / 2, diameter, diameter);
     }
 }
-
-
-
-
-
-
-
-
-
-// OLD CODE cus ima horder
-// void GridCell::drawCircle(QString brushColor, int currentPlayerId)
-// {
-//     setBrushColor(brushColor);
-//     setPlayerIconPosition(currentPlayerId);
-//     qInfo() << "currentPlayerId: " << currentPlayerId;
-//     drawCircleFlag = true;
-//     update();
-// }
-
-// void GridCell::paintEvent(QPaintEvent *event)
-// {
-//     QPushButton::paintEvent(event); // Call the base class implementation first
-
-//     if (drawCircleFlag) {
-//         QPainter painter(this);
-
-//         QPen pen(QColor(brushColor), 3);
-//         painter.setRenderHint(QPainter::Antialiasing);
-//         painter.setBrush(QColor(brushColor)); // Set brush color
-//         painter.setPen(pen);
-//         int diameter = qMin(20, 20); // Circle diameter
-
-//         int xCenter = this->width() / iconPosition; // X-coordinate of circle center
-//         int yCenter = this->height() / iconPosition; // Y-coordinate of circle center
-//         painter.drawEllipse(xCenter - diameter / 2, yCenter - diameter / 2, diameter, diameter);
-//     }
-// }
-

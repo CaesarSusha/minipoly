@@ -21,7 +21,7 @@ Server *Server::getInstance()
 Server::Server(quint16 port) :
     m_pWebSocketServer(new QWebSocketServer(QStringLiteral("Server"), QWebSocketServer::NonSecureMode,this))
 {
-    qInfo() << "forced server into existence";
+    qInfo() << "Created Server";
     if (m_pWebSocketServer->listen(QHostAddress::Any, port))
     {
         connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &Server::onConnection);
@@ -37,7 +37,7 @@ Server::~Server()
 
 void Server::onConnection()
 {
-    qInfo()<<"nouvelle connecthione:";
+    qInfo()<<"New Connection:";
 
     QWebSocket *pSocket = m_pWebSocketServer->nextPendingConnection();
 
@@ -48,20 +48,13 @@ void Server::onConnection()
     qInfo() << m_clients.length();
     qInfo()<<"socketConnected:"<< pSocket;
 
-    //create new User
+    // neuen Nutzer anlegen
     int playerId = game.addPlayer(pSocket);
 
 
-    //Debugging purpose
-    //User 1 has bought a house
-    // broadcastData("setOwner-2-3");
-    // broadcastData("setOwner-16-3");
-    // broadcastData("setOwner-23-3");
-    // broadcastData("setOwner-9-3");
-
     transmitData("setPlayerId-" + QString::number(playerId) , pSocket);
 
-    //Show new User
+    //Neuen Nutzer anzeigen
     broadcastData("Player" + QString::number(playerId) + " joined.");
     //It is now Player 1s turn
     if(playerId == 2)
@@ -73,8 +66,6 @@ void Server::onConnection()
     {
     transmitData("setCurrentPlayer-" + QString::number(game.getCurrentPlayer().getId()) , pSocket);
     }
-    //game->addPlayer();
-    //qInfo() << game->getCurrentPlayer().getId();
 }
 
 
