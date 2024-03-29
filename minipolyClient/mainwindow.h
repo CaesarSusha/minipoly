@@ -42,7 +42,8 @@ public:
 
     // server data handling
     void setOwner(int x, int y, int playerId);
-    QString getColorFromPlayerId(int playerId);
+    QString getBrushColorFromPlayerId(int playerId);
+    QString getPenColorFromPlayerId(int playerId);
     void setCurrentPlayer(int playerId);
     void displayRolledDice(int dice);
     void moveCurrentPlayerToGridCoords(int x, int y);

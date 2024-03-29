@@ -1,32 +1,29 @@
 #include "mainwindow.h"
 #include "gridcell.h"
-//#include "ui_mainwindow.h"
 #include <QGridLayout>
 #include <QLabel>
 #include <QPixmap>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
-
-    //int playerIconWidth = 100;
-    //int playerIconWidth = 100;
-
+    this->setStyleSheet("background-color: #1B201D;");
     this->width = 1920;
     this->height = 1080;
     this->boardSize = 900;
     this->setGeometry(0, 0, width, height);
-
     this->lastXPos = 0;
     this->lastYPos = 0;
 
     initGrid();
-    grid[5][3]->setIcon(QIcon(QPixmap(":/dice")));
-    //grid[5][3]->setStyleSheet("color: "+ getColorFromPlayerId(currentPlayerId) + ";");
+    grid[2][3]->setIcon(QIcon(QPixmap(":/dice")));
+
+
     for(int i = 0; i <= 6; i++)
     {
         player[i] = Player();
         player[i].playerId = i;
     }
+
 
 
 }
@@ -49,10 +46,7 @@ void MainWindow::initGrid()
             grid[x][y]->setIcon(QIcon(QPixmap(iconPath)));
             grid[x][y]->setIconSize(QSize(rectWidth, rectHeight));
 
-
-
-
-            //disable buttons in the middle
+            // Buttons in der Mitte ausschalten
             if (grid[x][y]->icon().isNull())
             {
                 grid[x][y]->setFlat(true);
@@ -60,15 +54,10 @@ void MainWindow::initGrid()
             }
             else
             {
-                //grid[x][y]->drawCircle();
                 grid[x][y]->drawCircleFlag = false;
             }
 
-            //qInfo() << "hallo " << grid[x][y]->icon();
             updateLastPos(y, rectHeight, rectWidth);
-
-            //grid[x][y]->setEnabled(false);
-            //grid[x][y]->setBorder("red");
         }
     }
 }
@@ -98,7 +87,7 @@ void MainWindow::updateLastPos(int y, int rectHeight, int rectWidth)
 
 void MainWindow::setOwner(int x, int y, int playerId)
 {
-    grid[x][y]->setBorder(this->getColorFromPlayerId(playerId));
+    grid[x][y]->setBorder(this->getBrushColorFromPlayerId(playerId));
 }
 
 void MainWindow::setCurrentPlayer(int playerId)
@@ -106,58 +95,53 @@ void MainWindow::setCurrentPlayer(int playerId)
     currentPlayerId = playerId;
     if(currentPlayerId == this->myPlayerId)
     {
-        grid[5][3]->setEnabled(true);
-        grid[1][1]->setEnabled(true);
-        grid[1][2]->setEnabled(true);
-        grid[4][3]->setText("Your Turn!");
+        // Kaufentscheidungs-Buttons anschalten
+        grid[5][2]->setEnabled(true);
+        grid[5][2]->setVisible(true);
+        grid[5][2]->setText("Decline");
+        grid[5][2]->setStyleSheet("background-color: red;");
+        grid[5][2]->setAutoFillBackground(true);
+
+        grid[5][5]->setEnabled(true);
+        grid[5][5]->setVisible(true);
+        grid[5][5]->setText("Buy Property");
+        grid[5][5]->setStyleSheet("background-color: green;");
+        grid[5][5]->setAutoFillBackground(true);
+
+
+        // Enable dice rolling button
+        grid[2][3]->setEnabled(true);
+        grid[1][3]->setText("Your Turn!");
+        grid[1][3]->setStyleSheet("color: white;");
     }
     else
     {
-        grid[5][3]->setEnabled(false);
-        grid[1][1]->setEnabled(false);
-        grid[1][2]->setEnabled(false);
-        grid[4][3]->setText("Waiting...");
+        // Disable Buy buttons
+        grid[5][2]->setVisible(false);
+        grid[5][5]->setVisible(false);
+        // Disable dice rolling button
+        grid[2][3]->setEnabled(false);
+        grid[1][3]->setText("Waiting...");
+        grid[1][3]->setStyleSheet("color: white;");
     }
 }
 
 void MainWindow::displayRolledDice(int dice)
 {
-    grid[5][4]->setText(QString::number(dice));
-    grid[5][4]->setStyleSheet("color: "+ getColorFromPlayerId(currentPlayerId) + ";");
+    // gewürfelte Augenzahl anzeigen
+    grid[2][4]->setText(QString::number(dice));
+    grid[2][4]->setStyleSheet("color: "+ getBrushColorFromPlayerId(currentPlayerId) + ";");
 }
 
 void MainWindow::moveCurrentPlayerToGridCoords(int x, int y)
 {
-    //draw a circle on gridcellId with the currentplayer color
-    //grid[5][3]->setStyleSheet("color: "+ getColorFromPlayerId(currentPlayerId) + ";");
-    //grid[x][y]->setBrushColor(getColorFromPlayerId(currentPlayerId));
-    //grid[x][y]->setPlayerIconPosition(currentPlayerId);
-    //grid[x][y]->drawCircleFlag = true;
     //remove old circle
     grid[player[currentPlayerId].positionX][player[currentPlayerId].positionY]->removeCircle();
     //add new circle
-    grid[x][y]->addCircle(getColorFromPlayerId(currentPlayerId), currentPlayerId);
+    grid[x][y]->addCircle(getBrushColorFromPlayerId(currentPlayerId), getPenColorFromPlayerId(currentPlayerId), currentPlayerId);
     //update player
     player[currentPlayerId].positionX = x;
     player[currentPlayerId].positionY = y;
-    //TEST
-    //grid[0][2]->addCircle(getColorFromPlayerId(1), 1);
-    //grid[0][2]->addCircle(getColorFromPlayerId(2), 2);
-    //grid[0][2]->addCircle(getColorFromPlayerId(3), 3);
-    //grid[0][2]->addCircle(getColorFromPlayerId(4), 4);
-    //grid[0][2]->addCircle(getColorFromPlayerId(5), 5);
-    //grid[0][2]->addCircle(getColorFromPlayerId(6), 6);
-
-
-    //grid[3][0]->addCircle(getColorFromPlayerId(1), 1);
-    //grid[3][0]->addCircle(getColorFromPlayerId(2), 2);
-    //grid[3][0]->addCircle(getColorFromPlayerId(3), 3);
-    //grid[3][0]->addCircle(getColorFromPlayerId(4), 4);
-    //grid[3][0]->addCircle(getColorFromPlayerId(5), 5);
-    //grid[3][0]->addCircle(getColorFromPlayerId(6), 6);
-
-
-
 }
 
 void MainWindow::setPurse(int purse, int playerId)
@@ -169,25 +153,50 @@ void MainWindow::setPurse(int purse, int playerId)
             playerCount.purse = purse;
         }
     }
+    grid[1][1]->setText(QString::number(player[myPlayerId].purse));
+    grid[1][1]->setVisible(true);
+    //qInfo<<m_mainWindow.player[m_mainWindow.myPlayerId].purse;
 }
 
-QString MainWindow::getColorFromPlayerId(int id)
+QString MainWindow::getBrushColorFromPlayerId(int playerId)
 {
-    switch(id)
+    switch(playerId)
     {
     case 1:
-        return "#ff0000";
+        return "#9F150E";
     case 2:
-        return "#0000ff";
+        return "#164260";
     case 3:
-        return "#00ff00";
+        return "#FEE083";
     case 4:
-        return "#ffff00";
+        return "#C5E493";
     case 5:
-        return "#00ffff";
+        return "#D484A2";
     case 6:
-        return "#ff00ff";
+        return "#019092";
     default:
         return "#ffffff";
     }
 }
+
+QString MainWindow::getPenColorFromPlayerId(int playerId)
+{
+    switch(playerId)
+    {
+    case 1:
+        return "#4E0A07";
+    case 2:
+        return "#102432";
+    case 3:
+        return "#716950";
+    case 4:
+        return "#687B48";
+    case 5:
+        return "#77516C";
+    case 6:
+        return "#0E5152";
+    default:
+        return "#000000";
+    }
+}
+

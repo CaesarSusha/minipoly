@@ -27,6 +27,12 @@ void GridCell::setBrushColor(QString newBrushColor)
     this->brushColor = newBrushColor;
 }
 
+void GridCell::setPenColor(QString newPenColor)
+{
+    this->penColor = newPenColor;
+}
+
+
 void GridCell::calculateIconPositions()
 {
     // Gesamtzahl der Kreise in einer Zeile/Spalte
@@ -59,12 +65,13 @@ void GridCell::calculateIconPositions()
     }
 }
 
-void GridCell::addCircle(const QString &brushColor, const int player)
+void GridCell::addCircle(const QString &brushColor, const QString &penColor, const int player)
 {
     calculateIconPositions();
 
     CircleProperties circle;
     circle.brushColor = brushColor;
+    circle.penColor = penColor;
 
     // Zuweisen von Kreispositionen aus den berechneten Positionen
     circle.circlePosition = iconPositions[player-1];
@@ -88,7 +95,7 @@ void GridCell::paintEvent(QPaintEvent *event)
     for (const auto &circle : circles)
     {
         painter.setRenderHint(QPainter::Antialiasing);
-        QPen pen(QColor(circle.brushColor), 3);
+        QPen pen(QColor(circle.penColor), 3);
         painter.setPen(pen);
         painter.setBrush(QColor(circle.brushColor));
 

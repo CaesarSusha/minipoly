@@ -9,6 +9,7 @@
 
 struct CircleProperties {
     QString brushColor;
+    QString penColor;
     QPoint circlePosition;
 };
 
@@ -23,7 +24,8 @@ public:
     //Ownership
     void setBorder(QString color);
     void setBrushColor(QString newBrushColor);
-    void addCircle(const QString &brushColor, const int player);
+    void setPenColor(QString newPenColor);
+    void addCircle(const QString &brushColor, const QString &penColor, const int player);
     void removeCircle();
     void paintEvent(QPaintEvent *event) override;
     bool drawCircleFlag;
@@ -32,6 +34,7 @@ private:
     int x, y;
 
     QString brushColor;
+    QString penColor;
     QVector<CircleProperties> circles;
     QVector<QPoint> iconPositions;
 

@@ -25,9 +25,12 @@ void Client::onConnection()
 
     connect(&m_webSocket, &QWebSocket::textMessageReceived, this, &Client::handleReceivedData);
 
-    connect(m_mainWindow.grid[5][3], &QPushButton::clicked, this, [=]() {transmitData("2");});
-    connect(m_mainWindow.grid[1][1], &QPushButton::clicked, this, [=]() {transmitData("0");});
-    connect(m_mainWindow.grid[1][2], &QPushButton::clicked, this, [=]() {transmitData("1");});
+    // Würfel-Button
+    connect(m_mainWindow.grid[2][3], &QPushButton::clicked, this, [=]() {transmitData("2");});
+    // Kauf ablehnen Button
+    connect(m_mainWindow.grid[5][2], &QPushButton::clicked, this, [=]() {transmitData("0");});
+    // Kauf vornehmen Button
+    connect(m_mainWindow.grid[5][5], &QPushButton::clicked, this, [=]() {transmitData("1");});
 
 }
 
@@ -47,7 +50,7 @@ void Client::handleReceivedData(QString data)
         qInfo() << "myPlayerId: " << m_mainWindow.myPlayerId;
         for (int i = 1; i < m_mainWindow.myPlayerId; i++)
         {
-            m_mainWindow.grid[7][0]->addCircle(m_mainWindow.getColorFromPlayerId(i), i);
+            m_mainWindow.grid[7][0]->addCircle(m_mainWindow.getBrushColorFromPlayerId(i), m_mainWindow.getPenColorFromPlayerId(i), i);
         }
     }
 
@@ -57,7 +60,7 @@ void Client::handleReceivedData(QString data)
         int newPlayer = data.mid(6,1).toInt(&successfulConvert);
         if(successfulConvert)
         {
-            m_mainWindow.grid[7][0]->addCircle(m_mainWindow.getColorFromPlayerId(newPlayer), newPlayer);
+            m_mainWindow.grid[7][0]->addCircle(m_mainWindow.getBrushColorFromPlayerId(newPlayer), m_mainWindow.getPenColorFromPlayerId(newPlayer), newPlayer);
         }
     }
 
