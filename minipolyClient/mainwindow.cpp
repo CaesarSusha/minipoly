@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     grid[2][3]->setIcon(QIcon(QPixmap(":/dice")));
 
 
-    for(int i = 0; i <= 6; i++)
+    for(int i = 1; i <= 6; i++)
     {
         player[i] = Player();
         player[i].playerId = i;
@@ -146,16 +146,16 @@ void MainWindow::moveCurrentPlayerToGridCoords(int x, int y)
 
 void MainWindow::setPurse(int purse, int playerId)
 {
-    for(Player playerCount : player)
+    for(int i = 1; i <= 6; i++)
     {
-        if(playerCount.playerId = playerId)
+        if(player[i].playerId == playerId)
         {
-            playerCount.purse = purse;
+            player[i].purse = purse;
         }
     }
     grid[1][1]->setText(QString::number(player[myPlayerId].purse));
     grid[1][1]->setVisible(true);
-    //qInfo<<m_mainWindow.player[m_mainWindow.myPlayerId].purse;
+    qInfo()<<"Player " << this->myPlayerId << " Purse: " << player[this->myPlayerId].purse;
 }
 
 QString MainWindow::getBrushColorFromPlayerId(int playerId)

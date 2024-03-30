@@ -11,6 +11,8 @@ Client::Client(const QUrl &url, QObject *parent) : QObject(parent)
 
     // Anzeige des Hauptfensters beim Start des Clients
     m_mainWindow.show();
+
+    //Zum testen: Selbstspielender Modus
     debug = false;
 }
 
@@ -41,9 +43,11 @@ void Client::onDisconnection()
 
 void Client::handleReceivedData(QString data)
 {
+    // Hier werden die Commandos vom Server bearbeitet und in der Ui dargestellt
     qInfo()<<"Received data from server: " << data;
     QStringList  splitData = data.split("-");
 
+    // Meine Spielfigur und die der bereits hinzugefügten Spieler setzen
     if(splitData[0] == "setPlayerId")
     {
         m_mainWindow.myPlayerId = splitData[1].toInt();
@@ -54,6 +58,7 @@ void Client::handleReceivedData(QString data)
         }
     }
 
+    // Spielfigur der neu dazugekommenen Spieler setzen
     if(data.left(6) == "Player" && data.right(8) == " joined.")
     {
         bool successfulConvert = false;
@@ -64,6 +69,7 @@ void Client::handleReceivedData(QString data)
         }
     }
 
+    // Besitz einer Karte darstellen
     if(splitData[0] == "setOwner")
     {
         int gridcellId = splitData[1].toInt();
@@ -72,21 +78,26 @@ void Client::handleReceivedData(QString data)
         m_mainWindow.setOwner(coords.x, coords.y, playerId);
     }
 
+
+    // Spieler, der an der Reihe ist, setzen
     if(splitData[0] == "setCurrentPlayer")
     {
         m_mainWindow.setCurrentPlayer(splitData[1].toInt());
 
-        //Zum testen
+        //Zum testen: Selbstspielender Modus
         if(debug && m_mainWindow.currentPlayerId == m_mainWindow.myPlayerId)
         {
             transmitData("2");
         }
     }
-
     if(splitData[0] == "setDice")
     {
         m_mainWindow.displayRolledDice(splitData[1].toInt());
+
+        // Zum testen: Selbstspielender Modus
+        debug = true;
     }
+
 
     if (splitData[0] == "moveCurrentPlayerToGridcellId")
     {        
@@ -95,7 +106,7 @@ void Client::handleReceivedData(QString data)
         m_mainWindow.moveCurrentPlayerToGridCoords(coords.x, coords.y);
         m_mainWindow.update();
 
-        //Zum testen
+        //Zum testen: Selbstspielender Modus
         if(debug && m_mainWindow.currentPlayerId == m_mainWindow.myPlayerId)
         {
             transmitData("1");
