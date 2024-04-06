@@ -48,23 +48,24 @@ void Server::onConnection()
     qInfo() << m_clients.length();
     qInfo()<<"socketConnected:"<< pSocket;
 
-    // neuen Nutzer anlegen
+    //Neuen Nutzer anlegen
     int playerId = game.addPlayer(pSocket);
 
 
-    transmitData("setPlayerId-" + QString::number(playerId) , pSocket);
+    transmitData("setPlayerId_" + QString::number(playerId) , pSocket);
 
     //Neuen Nutzer anzeigen
     broadcastData("Player" + QString::number(playerId) + " joined.");
-    //It is now Player 1s turn
     if(playerId == 2)
     {
+        //Start des Spiels sobald 2 Spieler verbunden sind
         game.setCurrentPlayer(game.getNextPlayer());
-        broadcastData("setCurrentPlayer-" + QString::number(game.getCurrentPlayer().getId()));
+        broadcastData("setCurrentPlayer_" + QString::number(game.getCurrentPlayer().getId()));
     }
     else
     {
-    transmitData("setCurrentPlayer-" + QString::number(game.getCurrentPlayer().getId()) , pSocket);
+        //Warten auf mehr Spieler
+        transmitData("setCurrentPlayer_" + QString::number(game.getCurrentPlayer().getId()) , pSocket);
     }
 }
 
@@ -78,6 +79,7 @@ void Server::handleReceivedData(QString data)
 {
     qInfo()<<"Received data from client: " << data;
     bool successfulConvert;
+    //Datenverifikation
     int clientCommand = data.toInt(&successfulConvert);
     if(game.getCurrentPlayer().getId() == -1 || game.getTurn() == -1)
     {
@@ -93,11 +95,14 @@ void Server::handleReceivedData(QString data)
                 if (game.getPhase() != 0)
                 {
                     QString result = game.runGame(false);
+
+                    //Aufteilung in einzelne Befehle
                     QStringList  splitResult = result.split("%");
                     for(QString part : splitResult)
                     {
                         if(part != "")
                         {
+                            //Versenden valider Befehle
                             broadcastData(part);
                         }
                     }
@@ -110,11 +115,14 @@ void Server::handleReceivedData(QString data)
                 if (game.getPhase() != 0)
                 {
                     QString result = game.runGame(true);
+
+                    //Aufteilung in einzelne Befehle
                     QStringList  splitResult = result.split("%");
                     for(QString part : splitResult)
                     {
                         if(part != "")
                         {
+                            //Versenden valider Befehle
                             broadcastData(part);
                         }
                     }
@@ -127,11 +135,13 @@ void Server::handleReceivedData(QString data)
                 if(game.getPhase() == 0)
                 {
                     QString result = game.runGame(false);
+                    //Aufteilung in einzelne Befehle
                     QStringList  splitResult = result.split("%");
                     for(QString part : splitResult)
                     {
                         if(part != "")
                         {
+                            //Versenden valider Befehle
                             broadcastData(part);
                         }
                     }

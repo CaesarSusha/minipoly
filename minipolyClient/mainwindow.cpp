@@ -15,17 +15,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     this->lastYPos = 0;
 
     initGrid();
-    grid[2][3]->setIcon(QIcon(QPixmap(":/dice")));
 
+    grid[2][3]->setIcon(QIcon(QPixmap(":/dice")));
 
     for(int i = 1; i <= 6; i++)
     {
         player[i] = Player();
         player[i].playerId = i;
     }
-
-
-
 }
 
 void MainWindow::initGrid()
@@ -34,14 +31,18 @@ void MainWindow::initGrid()
     {
         for (int y = 0; y < 8; y++)
         {
+            // Zellen anlegen
             this->grid[x][y] = new GridCell(this, x, y);
 
+            // Maße jeder Zelle ermitteln
             int rectWidth = determineWidth(y);
             int rectHeight = determineHeight(x);
             int boardStartX = (width-boardSize)/2;
             int boardStartY = (height-boardSize)/4;
-            grid[x][y]->setGeometry(QRect(boardStartX +(lastXPos), boardStartY + (lastYPos), rectWidth, rectHeight));
-
+            grid[x][y]->setGeometry(QRect(boardStartX +(lastXPos),
+                                          boardStartY + (lastYPos),
+                                          rectWidth, rectHeight));
+            //Bilder einfügen
             QString iconPath = ":/" + QString::number(x) + QString::number(y);
             grid[x][y]->setIcon(QIcon(QPixmap(iconPath)));
             grid[x][y]->setIconSize(QSize(rectWidth, rectHeight));
@@ -52,11 +53,7 @@ void MainWindow::initGrid()
                 grid[x][y]->setFlat(true);
                 grid[x][y]->setEnabled(false);
             }
-            else
-            {
-                grid[x][y]->drawCircleFlag = false;
-            }
-
+            //Position aktualisieren und bei Bedarf zur nächsten Zeile des grids wechseln
             updateLastPos(y, rectHeight, rectWidth);
         }
     }
@@ -75,11 +72,13 @@ int MainWindow::determineHeight(int y)
 
 void MainWindow::updateLastPos(int y, int rectHeight, int rectWidth)
 {
+    // Zur nächsten Zeile wechseln wenn Ende der Zeile erreicht ist
     if(y >= 7)
     {
         lastXPos = 0;
         lastYPos += rectHeight;
     }
+    //Die nächste Zelle neben der gerade gezeichneten zeichnen
     else{
         lastXPos += rectWidth;
     }

@@ -33,7 +33,6 @@ void Client::onConnection()
     connect(m_mainWindow.grid[5][2], &QPushButton::clicked, this, [=]() {transmitData("0");});
     // Kauf vornehmen Button
     connect(m_mainWindow.grid[5][5], &QPushButton::clicked, this, [=]() {transmitData("1");});
-
 }
 
 void Client::onDisconnection()
@@ -45,7 +44,7 @@ void Client::handleReceivedData(QString data)
 {
     // Hier werden die Commandos vom Server bearbeitet und in der Ui dargestellt
     qInfo()<<"Received data from server: " << data;
-    QStringList  splitData = data.split("-");
+    QStringList  splitData = data.split("_");
 
     // Meine Spielfigur und die der bereits hinzugefügten Spieler setzen
     if(splitData[0] == "setPlayerId")
