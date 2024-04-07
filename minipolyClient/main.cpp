@@ -9,6 +9,13 @@ int main(int argc, char *argv[])
 {
     //Deklarieren QApplication
     QApplication a(argc, argv);
+    QFont font("Sans");
+    font.setStyleHint(QFont::Monospace);
+    font.setPointSize(15);
+    font.setWeight(80);
+    QApplication::setFont(font);
+
+
 
     QUrl url;
 

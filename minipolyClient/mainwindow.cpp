@@ -17,6 +17,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     initGrid();
 
     grid[2][3]->setIcon(QIcon(QPixmap(":/dice")));
+    grid[1][2]->setVisible(false);
+
+    //Display starting purse
+    grid[3][3]->setText("Your \nPurse:");
+    grid[3][3]->setStyleSheet("color: #FFD954");
+    grid[3][3]->setVisible(true);
+
+    grid[3][4]->setText("10000");
+    grid[3][4]->setStyleSheet("color: #FFD954");
+    grid[3][4]->setVisible(true);
 
     for(int i = 1; i <= 6; i++)
     {
@@ -94,24 +104,27 @@ void MainWindow::setCurrentPlayer(int playerId)
     currentPlayerId = playerId;
     if(currentPlayerId == this->myPlayerId)
     {
+
         //Kaufentscheidungs-Buttons anschalten
         grid[5][2]->setEnabled(true);
         grid[5][2]->setVisible(true);
         grid[5][2]->setText("Decline");
-        grid[5][2]->setStyleSheet("background-color: red;");
+        grid[5][2]->setStyleSheet("background-color: #B80900;");
         grid[5][2]->setAutoFillBackground(true);
 
         grid[5][5]->setEnabled(true);
         grid[5][5]->setVisible(true);
-        grid[5][5]->setText("Buy Property");
-        grid[5][5]->setStyleSheet("background-color: green;");
-        grid[5][5]->setAutoFillBackground(true);
+        grid[5][5]->setText("Buy");
+        grid[5][5]->setStyleSheet("background-color: #1AA530;");
 
+        grid[5][5]->setAutoFillBackground(true);
 
         //Enable dice rolling button
         grid[2][3]->setEnabled(true);
-        grid[1][3]->setText("Your Turn!");
+        grid[1][3]->setText("  Your");
+        grid[1][4]->setText("Turn!  ");
         grid[1][3]->setStyleSheet("color: white;");
+        grid[1][4]->setStyleSheet("color: white;");
     }
     else
     {
@@ -120,8 +133,11 @@ void MainWindow::setCurrentPlayer(int playerId)
         grid[5][5]->setVisible(false);
         //Disable dice rolling button
         grid[2][3]->setEnabled(false);
-        grid[1][3]->setText("Waiting...");
+        grid[1][3]->setText("Waiting");
         grid[1][3]->setStyleSheet("color: white;");
+        grid[1][4]->setText("...    ");
+        grid[1][4]->setStyleSheet("color: white;");
+
         //Disable Price Display
         grid[4][5]->setVisible(false);
     }
@@ -145,6 +161,19 @@ void MainWindow::moveCurrentPlayerToGridCoords(int x, int y)
     player[currentPlayerId].positionY = y;
 }
 
+void MainWindow::setDisplayedPrice(int price)
+{
+    if(currentPlayerId == this->myPlayerId)
+    {
+        //Preis der Immobilie anzeigen
+        grid[4][5]->setText("Price:\n" + QString::number(price));
+        grid[4][5]->setStyleSheet("color: #FFD954;");
+        grid[4][5]->setVisible(true);
+
+
+    }
+}
+
 void MainWindow::setPurse(int purse, int playerId)
 {
     for(int i = 1; i <= 6; i++)
@@ -154,8 +183,16 @@ void MainWindow::setPurse(int purse, int playerId)
             player[i].purse = purse;
         }
     }
-    grid[1][1]->setText(QString::number(player[myPlayerId].purse));
-    grid[1][1]->setVisible(true);
+
+    if(this->player[myPlayerId].purse == 0)
+    {
+        grid[3][4]->setText("10000");
+    }
+    else
+    {
+        grid[3][4]->setText(QString::number(player[myPlayerId].purse));
+    }
+
     qInfo()<<"Player " << this->myPlayerId << " Purse: " << player[this->myPlayerId].purse;
 }
 
@@ -166,7 +203,7 @@ QString MainWindow::getBrushColorFromPlayerId(int playerId)
     case 1:
         return "#9F150E";
     case 2:
-        return "#164260";
+        return "#019092";
     case 3:
         return "#FEE083";
     case 4:
@@ -174,7 +211,7 @@ QString MainWindow::getBrushColorFromPlayerId(int playerId)
     case 5:
         return "#D484A2";
     case 6:
-        return "#019092";
+        return "#164260";
     default:
         return "#ffffff";
     }
@@ -185,7 +222,7 @@ QString MainWindow::getPenColorFromPlayerId(int playerId)
     switch(playerId)
     {
     case 1:
-        return "#4E0A07";
+        return "#0E5152";
     case 2:
         return "#102432";
     case 3:
@@ -195,17 +232,8 @@ QString MainWindow::getPenColorFromPlayerId(int playerId)
     case 5:
         return "#77516C";
     case 6:
-        return "#0E5152";
+        return "#102432";
     default:
         return "#000000";
-    }
-}
-
-void MainWindow::setDisplayedPrice(int price)
-{
-    if(currentPlayerId == this->myPlayerId)
-    {
-        grid[4][5]->setText("Price:\n" + QString::number(price));
-        grid[4][5]->setVisible(true);
     }
 }

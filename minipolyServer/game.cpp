@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-    dices = Dice(6);
+    dices = Dice(12);
     gameBoard = Board();
     currentPlayer = Player();
     turn = 0;

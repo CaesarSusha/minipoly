@@ -113,6 +113,12 @@ void Client::handleReceivedData(QString data)
         }
     }
 
+    //Preis setzen
+    if(splitData[0] == "setDisplayedPrice")
+    {
+        m_mainWindow.setDisplayedPrice(splitData[1].toInt());
+    }
+
     //Vermögen setzen
     if (splitData[0] == "setPurse")
     {
@@ -124,15 +130,16 @@ void Client::handleReceivedData(QString data)
     //Spiel beenden
     if (splitData[0] == "setGameOver")
     {
+        //Buttons ausschalten
         m_mainWindow.grid[5][3]->setEnabled(false);
-        m_mainWindow.grid[1][1]->setEnabled(false);
+        m_mainWindow.grid[5][3]->setVisible(false);
+        m_mainWindow.grid[4][3]->setEnabled(false);
+        m_mainWindow.grid[4][3]->setVisible(false);
         m_mainWindow.grid[1][2]->setEnabled(false);
-    }
+        m_mainWindow.grid[1][2]->setVisible(false);
 
-    //Preis setzen
-    if(splitData[0] == "setDisplayedPrice")
-    {
-        m_mainWindow.setDisplayedPrice(splitData[1].toInt());
+        //Game Over anzeigen
+        m_mainWindow.grid[1][3]->setText("Game Over!");
     }
 }
 

@@ -13,6 +13,15 @@ Dice::Dice(int Eyes)
     this->eyes = Eyes;
 }
 
+int Dice::rollDice()
+{
+    //Den Seed des Zufallsgenerators setzen
+    srand((unsigned) time(NULL));
+    //Die Zufallszahl soll Werte von 1 bis 12 annehmen können
+    return 1 + (rand() % eyes);
+}
+
+//legacy-code
 /*
 int Dice::rollDice()
 {
@@ -28,11 +37,3 @@ int Dice::rollDice()
     //return distribute(generator);
 }
 */
-
-int Dice::rollDice()
-{
-    //Den Seed des Zufallsgenerators setzen
-    srand((unsigned) time(NULL));
-    //Die Zufallszahl soll Werte von 1 bis 12 annehmen können
-    return 1 + (rand() % 12);
-}
