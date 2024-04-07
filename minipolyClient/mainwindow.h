@@ -48,6 +48,9 @@ public:
     Player player[7];
     int myPlayerId;
     int currentPlayerId;
+
+    //Preis anzeigen
+    void setDisplayedPrice(int price);
 };
 
 #endif // MAINWINDOW_H

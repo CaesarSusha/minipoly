@@ -122,6 +122,8 @@ void MainWindow::setCurrentPlayer(int playerId)
         grid[2][3]->setEnabled(false);
         grid[1][3]->setText("Waiting...");
         grid[1][3]->setStyleSheet("color: white;");
+        //Disable Price Display
+        grid[4][5]->setVisible(false);
     }
 }
 
@@ -199,3 +201,11 @@ QString MainWindow::getPenColorFromPlayerId(int playerId)
     }
 }
 
+void MainWindow::setDisplayedPrice(int price)
+{
+    if(currentPlayerId == this->myPlayerId)
+    {
+        grid[4][5]->setText("Price:\n" + QString::number(price));
+        grid[4][5]->setVisible(true);
+    }
+}

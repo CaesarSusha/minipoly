@@ -128,6 +128,12 @@ void Client::handleReceivedData(QString data)
         m_mainWindow.grid[1][1]->setEnabled(false);
         m_mainWindow.grid[1][2]->setEnabled(false);
     }
+
+    //Preis setzen
+    if(splitData[0] == "setDisplayedPrice")
+    {
+        m_mainWindow.setDisplayedPrice(splitData[1].toInt());
+    }
 }
 
 void Client::transmitData(QString data)

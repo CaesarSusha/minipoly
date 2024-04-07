@@ -47,9 +47,11 @@ QString Game::runGame(bool action)
             //Das Feld hat keinen Besitzer und ist kaufbar
             if(owner.getId() == -1)
             {
-                if(currentPlayer.getPurse() >= gameBoard.squares[newPosition].getPrice())
+                int price = gameBoard.squares[newPosition].getPrice();
+                if(currentPlayer.getPurse() >= price)
                 {
                     phase = 1;
+                    result += "setDisplayedPrice_" + QString::number(price) + "%";
                     return result;
                 }
                 phase = 2;
