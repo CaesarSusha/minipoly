@@ -14,6 +14,7 @@ int Game::addPlayer(QWebSocket* socket)
 {
     //Ermittlung einer neuen PlayerID
     playerAmount += 1;
+
     //Anlegen eines neuen Spielers
     players<<Player(socket, playerAmount);
     return playerAmount;
@@ -24,11 +25,12 @@ QString Game::runGame(bool action)
     QString result = "";
     switch(phase)
     {
-    //warten auf Spieler zu würfeln
+    //Warten auf Würfeln des Spielers
         case 0:
         {
             //Ermittlung der neuen Position
             int diceRoll = dices.rollDice();
+
             //Spieler läuft über das Startfeld
             if(currentPlayer.getPosition() + diceRoll > 28)
             {
@@ -38,8 +40,10 @@ QString Game::runGame(bool action)
             int newPosition = (currentPlayer.getPosition() + diceRoll)%28;
             currentPlayer.setPosition(newPosition);
             result += "moveCurrentPlayerToGridcellId_" + QString::number(newPosition) + "%" + "setDice_" + QString::number(diceRoll)+ "%";
+
             //Ermittlung des Besitzers des neuen Feldes
             Player owner = gameBoard.squares[newPosition].getOwner();
+
             //Das Feld hat keinen Besitzer und ist kaufbar
             if(owner.getId() == -1)
             {
@@ -51,22 +55,26 @@ QString Game::runGame(bool action)
                 phase = 2;
                 return result;
             }
+
             //Das Feld hat keinen Besitzer und ist nicht kaufbar
             if(owner.getId() == -2)
             {
                 phase = 2;;
                 return result + runGame(false);
             }
+
             //Der aktuelle Spieler ist der Besitzer
             if(currentPlayer.getId() == owner.getId())
             {
                 phase = 2;
                 return result + runGame(false);
             }
+
             //Ermittelung der Miete
             int rent = gameBoard.squares[newPosition].getRent();
             int collection = gameBoard.squares[newPosition].getCollection();
             bool fullCollection = true;
+
             //Abfrage, ob dem Spieler die komplette Collection gehört
             for (Square square : gameBoard.squares)
             {
@@ -79,6 +87,7 @@ QString Game::runGame(bool action)
             {
                 rent *= 2;
             }
+
             //Aktualisierung des Geldbeutels jedes Spielers
             currentPlayer.setPurse(currentPlayer.getPurse() - rent);
             int ownerId = 0;
@@ -95,6 +104,7 @@ QString Game::runGame(bool action)
                      "setPurse_" + QString::number(players[ownerId].getPurse()) + "_" + QString::number(owner.getId()) + "%" +
                      "moveCurrentPlayerToGridcellId_" + QString::number(getCurrentPlayer().getPosition()) + "%" +
                      "setDice_" + QString::number(diceRoll)+ "%";
+
             //Ein Spieler hat Schulden => Ende des Spiels
             if(currentPlayer.getPurse() < 0)
             {
@@ -104,7 +114,8 @@ QString Game::runGame(bool action)
             phase = 2;
             return result + runGame(false);
         }
-        //warten auf Spieler Feld zu kaufen
+
+        //Warten auf Entscheidung des Spielers
         case 1:
         {
             phase = 2;
@@ -172,13 +183,14 @@ Player Game::getCurrentPlayer()
 
 Player Game::getNextPlayer()
 {
+    //Keine Spieler vorhanden
     if(playerAmount == 0)
     {
-        //Keine Spieler vorhanden
         return Player();
     }
     int currentPlayerId = currentPlayer.getId();
     int i = 0;
+
     //Ermittlung der Position des aktuellen Spielers in der Liste
     for(Player player : players)
     {
@@ -188,9 +200,9 @@ Player Game::getNextPlayer()
         }
         i += 1;
     }
+    //Aktuellen Spieler vom Anfang der Liste nehmen und ans Ende setzen
     if(i < playerAmount)
     {
-        //aktuellen Spieler vom Anfang der Liste nehmen und ans Ende setzen
         players.removeAt(i);
         players.push_back(currentPlayer);
     }
@@ -222,6 +234,7 @@ void Game::endGame()
     writeCSV("protocol", content);
 
     int winner = players[0].getId() - 1;
+
     //Gewinner (Spieler mit meistem Geld) ermitteln
     for(Player player : players)
     {
@@ -239,7 +252,6 @@ void Game::endGame()
 
     turn = -1;
 }
-
 
 void Game::writeCSV(QString filename, QString content)
 {

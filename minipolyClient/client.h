@@ -8,9 +8,9 @@
 class Client : public QObject
 {
     public:
-        struct coordinates {             // Structure declaration
-            int x;         // Member (int variable)
-            int y;   // Member (string variable)
+        struct coordinates {
+            int x;
+            int y;
         };
 
     Q_OBJECT

@@ -7,8 +7,6 @@ QT_USE_NAMESPACE
 
 Server* Server::instance = nullptr;
 
-
-
 Server *Server::getInstance()
 {
     if(instance == nullptr)
@@ -56,15 +54,17 @@ void Server::onConnection()
 
     //Neuen Nutzer anzeigen
     broadcastData("Player" + QString::number(playerId) + " joined.");
+
+    //Start des Spiels sobald 2 Spieler verbunden sind
     if(playerId == 2)
     {
-        //Start des Spiels sobald 2 Spieler verbunden sind
         game.setCurrentPlayer(game.getNextPlayer());
         broadcastData("setCurrentPlayer_" + QString::number(game.getCurrentPlayer().getId()));
     }
+
+    //Warten auf mehr Spieler
     else
     {
-        //Warten auf mehr Spieler
         transmitData("setCurrentPlayer_" + QString::number(game.getCurrentPlayer().getId()) , pSocket);
     }
 }
@@ -79,6 +79,7 @@ void Server::handleReceivedData(QString data)
 {
     qInfo()<<"Received data from client: " << data;
     bool successfulConvert;
+
     //Datenverifikation
     int clientCommand = data.toInt(&successfulConvert);
     if(game.getCurrentPlayer().getId() == -1 || game.getTurn() == -1)
@@ -109,6 +110,7 @@ void Server::handleReceivedData(QString data)
                 }
                 return;
             }
+
             //Kauf annehmen
             case 1:
             {
@@ -129,6 +131,7 @@ void Server::handleReceivedData(QString data)
                 }
                 return;
             }
+
             //Würfeln
             case 2:
             {
@@ -152,6 +155,7 @@ void Server::handleReceivedData(QString data)
                 break;
         }
     }
+
     //Chatfunktion
     broadcastData(data);
 

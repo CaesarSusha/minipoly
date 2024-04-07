@@ -9,7 +9,7 @@ Client::Client(const QUrl &url, QObject *parent) : QObject(parent)
 
     m_webSocket.open(url);
 
-    // Anzeige des Hauptfensters beim Start des Clients
+    //Anzeige des Hauptfensters beim Start des Clients
     m_mainWindow.show();
 
     //Zum testen: Selbstspielender Modus
@@ -27,11 +27,11 @@ void Client::onConnection()
 
     connect(&m_webSocket, &QWebSocket::textMessageReceived, this, &Client::handleReceivedData);
 
-    // Würfel-Button
+    //Würfel Knopf
     connect(m_mainWindow.grid[2][3], &QPushButton::clicked, this, [=]() {transmitData("2");});
-    // Kauf ablehnen Button
+    //Kauf ablehnen Knopf
     connect(m_mainWindow.grid[5][2], &QPushButton::clicked, this, [=]() {transmitData("0");});
-    // Kauf vornehmen Button
+    //Kauf vornehmen Knopf
     connect(m_mainWindow.grid[5][5], &QPushButton::clicked, this, [=]() {transmitData("1");});
 }
 
@@ -42,11 +42,11 @@ void Client::onDisconnection()
 
 void Client::handleReceivedData(QString data)
 {
-    // Hier werden die Commandos vom Server bearbeitet und in der Ui dargestellt
+    //Hier werden die Commandos vom Server bearbeitet und in der UI dargestellt
     qInfo()<<"Received data from server: " << data;
     QStringList  splitData = data.split("_");
 
-    // Meine Spielfigur und die der bereits hinzugefügten Spieler setzen
+    //Meine Spielfigur und die der bereits hinzugefügten Spieler setzen
     if(splitData[0] == "setPlayerId")
     {
         m_mainWindow.myPlayerId = splitData[1].toInt();
@@ -57,7 +57,7 @@ void Client::handleReceivedData(QString data)
         }
     }
 
-    // Spielfigur der neu dazugekommenen Spieler setzen
+    //Spielfigur der neu dazugekommenen Spieler setzen
     if(data.left(6) == "Player" && data.right(8) == " joined.")
     {
         bool successfulConvert = false;
@@ -68,7 +68,7 @@ void Client::handleReceivedData(QString data)
         }
     }
 
-    // Besitz einer Karte darstellen
+    //Besitz einer Karte darstellen
     if(splitData[0] == "setOwner")
     {
         int gridcellId = splitData[1].toInt();
@@ -77,8 +77,7 @@ void Client::handleReceivedData(QString data)
         m_mainWindow.setOwner(coords.x, coords.y, playerId);
     }
 
-
-    // Spieler, der an der Reihe ist, setzen
+    //Spieler, der an der Reihe ist, setzen
     if(splitData[0] == "setCurrentPlayer")
     {
         m_mainWindow.setCurrentPlayer(splitData[1].toInt());
@@ -89,15 +88,17 @@ void Client::handleReceivedData(QString data)
             transmitData("2");
         }
     }
+
+    //Augenzahl des Würfels setzen
     if(splitData[0] == "setDice")
     {
         m_mainWindow.displayRolledDice(splitData[1].toInt());
 
-        // Zum testen: Selbstspielender Modus
-        debug = true;
+        //Zum testen: Selbstspielender Modus
+        debug = false;
     }
 
-
+    //Spielfigur bewegen
     if (splitData[0] == "moveCurrentPlayerToGridcellId")
     {        
         int gridcellId = splitData[1].toInt();
@@ -112,6 +113,7 @@ void Client::handleReceivedData(QString data)
         }
     }
 
+    //Vermögen setzen
     if (splitData[0] == "setPurse")
     {
         int purse = splitData[1].toInt();
@@ -119,6 +121,7 @@ void Client::handleReceivedData(QString data)
         m_mainWindow.setPurse(purse, playerId);
     }
 
+    //Spiel beenden
     if (splitData[0] == "setGameOver")
     {
         m_mainWindow.grid[5][3]->setEnabled(false);
@@ -137,7 +140,7 @@ Client::coordinates Client::convertIdToCoordinates(int gridcellId)
 {
     coordinates coords;
 
-    // gridcellId den Koordinaten zuordnen
+    //GridcellIds den Koordinaten zuordnen
     static const std::map<int, coordinates> gridcellCoordinates = {
         {0, {7, 0}}, {1, {6, 0}}, {2, {5, 0}}, {3, {4, 0}}, {4, {3, 0}}, {5, {2, 0}}, {6, {1, 0}},
         {7, {0, 0}}, {8, {0, 1}}, {9, {0, 2}}, {10, {0, 3}}, {11, {0, 4}}, {12, {0, 5}}, {13, {0, 6}},
@@ -145,14 +148,18 @@ Client::coordinates Client::convertIdToCoordinates(int gridcellId)
         {21, {7, 7}}, {22, {7, 6}}, {23, {7, 5}}, {24, {7, 4}}, {25, {7, 3}}, {26, {7, 2}}, {27, {7, 1}}
     };
 
-    // Ermittlung der Koordinaten für die angegebene gridcellId
+    //Ermittlung der Koordinaten für die angegebene gridcellId
+
+    //GridcellId in der map finden
     auto it = gridcellCoordinates.find(gridcellId);
+
+    //Der GridcellId entsprechende Koordinaten finden
     if (it != gridcellCoordinates.end()) {
         coords = it->second;
     }
+    //Ungültige gridcellId behandeln
     else
     {
-        // Ungültige gridcellId behandeln
         coords.x = -1;
         coords.y = -1;
     }

@@ -16,7 +16,7 @@ GridCell::~GridCell()
 
 }
 
-// wenn ein Spieler ein Gebäude gekauft hat, bekommt es die Border in seiner Color
+//Wenn ein Spieler ein Gebäude gekauft hat, bekommt es die Border in seiner Color
 void GridCell::setBorder(QString color)
 {
     this->setStyleSheet("border: 4px solid " + color + ";");
@@ -35,7 +35,7 @@ void GridCell::setPenColor(QString newPenColor)
 
 void GridCell::calculateIconPositions()
 {
-    // Gesamtzahl der Kreise in einer Zeile/Spalte
+    //Gesamtzahl der Kreise in einer Zeile/Spalte
     int totalCirclesX;
     int totalCirclesY;
     if(this->width() > this->height())
@@ -49,14 +49,17 @@ void GridCell::calculateIconPositions()
         totalCirclesY = 3;
     }
 
-    // Abstand zwischen den Kreisen berechnen
+    //Abstand zwischen den Kreisen berechnen
     int spaceBetweenCirclesX = this->width() / (totalCirclesX + 1);
     int spaceBetweenCirclesY = this->height() / (totalCirclesY + 1);
 
-    // Position für jeden Kreis berechnen
-    for (int i = 1; i <= totalCirclesX; ++i) {
-        for (int j = 1; j <= totalCirclesY; ++j) {
-            // x- und y-Position des Kreismittelpunkts berechnen
+    //Position für jeden Kreis berechnen
+    for (int i = 1; i <= totalCirclesX; ++i)
+    {
+        for (int j = 1; j <= totalCirclesY; ++j)
+        {
+
+            //x- und y-Position des Kreismittelpunkts berechnen
             int xPos = i * spaceBetweenCirclesX;
             int yPos = j * spaceBetweenCirclesY;
 
@@ -73,12 +76,14 @@ void GridCell::addCircle(const QString &brushColor, const QString &penColor, con
     circle.brushColor = brushColor;
     circle.penColor = penColor;
 
-    // Zuweisen von Kreispositionen aus den berechneten Positionen
+    //Zuweisen von Kreispositionen aus den berechneten Positionen
     circle.circlePosition = iconPositions[player-1];
     circles.append(circle);
 
     this->drawCircleFlag = true;
-    update(); // erneutes Zeichnen des Widget auslösen
+
+    //Erneutes Zeichnen des Widget auslösen
+    update();
 }
 
 void GridCell::removeCircle()
@@ -89,7 +94,8 @@ void GridCell::removeCircle()
 
 void GridCell::paintEvent(QPaintEvent *event)
 {
-    QPushButton::paintEvent(event); // Zuerst die Implementierung der Basisklasse aufrufen
+    //Zuerst die Implementierung der Basisklasse aufrufen
+    QPushButton::paintEvent(event);
     QPainter painter(this);
 
     for (const auto &circle : circles)

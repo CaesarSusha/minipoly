@@ -31,10 +31,10 @@ void MainWindow::initGrid()
     {
         for (int y = 0; y < 8; y++)
         {
-            // Zellen anlegen
+            //Zellen anlegen
             this->grid[x][y] = new GridCell(this, x, y);
 
-            // Maße jeder Zelle ermitteln
+            //Maße jeder Zelle ermitteln
             int rectWidth = determineWidth(y);
             int rectHeight = determineHeight(x);
             int boardStartX = (width-boardSize)/2;
@@ -47,7 +47,7 @@ void MainWindow::initGrid()
             grid[x][y]->setIcon(QIcon(QPixmap(iconPath)));
             grid[x][y]->setIconSize(QSize(rectWidth, rectHeight));
 
-            // Buttons in der Mitte ausschalten
+            //Buttons in der Mitte ausschalten
             if (grid[x][y]->icon().isNull())
             {
                 grid[x][y]->setFlat(true);
@@ -72,7 +72,7 @@ int MainWindow::determineHeight(int y)
 
 void MainWindow::updateLastPos(int y, int rectHeight, int rectWidth)
 {
-    // Zur nächsten Zeile wechseln wenn Ende der Zeile erreicht ist
+    //Zur nächsten Zeile wechseln wenn Ende der Zeile erreicht ist
     if(y >= 7)
     {
         lastXPos = 0;
@@ -94,7 +94,7 @@ void MainWindow::setCurrentPlayer(int playerId)
     currentPlayerId = playerId;
     if(currentPlayerId == this->myPlayerId)
     {
-        // Kaufentscheidungs-Buttons anschalten
+        //Kaufentscheidungs-Buttons anschalten
         grid[5][2]->setEnabled(true);
         grid[5][2]->setVisible(true);
         grid[5][2]->setText("Decline");
@@ -108,17 +108,17 @@ void MainWindow::setCurrentPlayer(int playerId)
         grid[5][5]->setAutoFillBackground(true);
 
 
-        // Enable dice rolling button
+        //Enable dice rolling button
         grid[2][3]->setEnabled(true);
         grid[1][3]->setText("Your Turn!");
         grid[1][3]->setStyleSheet("color: white;");
     }
     else
     {
-        // Disable Buy buttons
+        //Disable Buy buttons
         grid[5][2]->setVisible(false);
         grid[5][5]->setVisible(false);
-        // Disable dice rolling button
+        //Disable dice rolling button
         grid[2][3]->setEnabled(false);
         grid[1][3]->setText("Waiting...");
         grid[1][3]->setStyleSheet("color: white;");
@@ -127,18 +127,18 @@ void MainWindow::setCurrentPlayer(int playerId)
 
 void MainWindow::displayRolledDice(int dice)
 {
-    // gewürfelte Augenzahl anzeigen
+    //gewürfelte Augenzahl anzeigen
     grid[2][4]->setText(QString::number(dice));
     grid[2][4]->setStyleSheet("color: "+ getBrushColorFromPlayerId(currentPlayerId) + ";");
 }
 
 void MainWindow::moveCurrentPlayerToGridCoords(int x, int y)
 {
-    //remove old circle
+    //Alten Kreis entfernen
     grid[player[currentPlayerId].positionX][player[currentPlayerId].positionY]->removeCircle();
-    //add new circle
+    //Neuen Kreis hinzufügen
     grid[x][y]->addCircle(getBrushColorFromPlayerId(currentPlayerId), getPenColorFromPlayerId(currentPlayerId), currentPlayerId);
-    //update player
+    //Player aktualisieren
     player[currentPlayerId].positionX = x;
     player[currentPlayerId].positionY = y;
 }

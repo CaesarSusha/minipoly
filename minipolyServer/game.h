@@ -34,10 +34,13 @@ private:
     int phase;
     int playerAmount;
     QString squareBought;
-    //Player Objekte für die Spieler
-    QList<Player> players;
+
     void endGame();
     void writeCSV(QString filename, QString content);
+
+    //Player Objekte für die Spieler
+    QList<Player> players;
+
 };
 
 #endif // GAME_H

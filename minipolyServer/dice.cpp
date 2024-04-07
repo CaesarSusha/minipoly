@@ -31,7 +31,7 @@ int Dice::rollDice()
 
 int Dice::rollDice()
 {
-    //Den seed des Zufallsgenerators setzen
+    //Den Seed des Zufallsgenerators setzen
     srand((unsigned) time(NULL));
     //Die Zufallszahl soll Werte von 1 bis 12 annehmen können
     return 1 + (rand() % 12);
