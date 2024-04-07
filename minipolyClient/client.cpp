@@ -95,7 +95,7 @@ void Client::handleReceivedData(QString data)
         m_mainWindow.displayRolledDice(splitData[1].toInt());
 
         //Zum testen: Selbstspielender Modus
-        debug = false;
+        debug = true;
     }
 
     //Spielfigur bewegen
@@ -131,15 +131,39 @@ void Client::handleReceivedData(QString data)
     if (splitData[0] == "setGameOver")
     {
         //Buttons ausschalten
-        m_mainWindow.grid[5][3]->setEnabled(false);
-        m_mainWindow.grid[5][3]->setVisible(false);
-        m_mainWindow.grid[4][3]->setEnabled(false);
-        m_mainWindow.grid[4][3]->setVisible(false);
-        m_mainWindow.grid[1][2]->setEnabled(false);
-        m_mainWindow.grid[1][2]->setVisible(false);
+
+        //KAufabfrage
+        m_mainWindow.grid[5][2]->setEnabled(false);
+        m_mainWindow.grid[5][2]->setVisible(false);
+        m_mainWindow.grid[5][5]->setEnabled(false);
+        m_mainWindow.grid[5][5]->setVisible(false);
+
+        //Würfel
+        m_mainWindow.grid[2][3]->setEnabled(false);
+        m_mainWindow.grid[2][3]->setVisible(false);
+
+        //Augenzahl
+        m_mainWindow.grid[2][4]->setEnabled(false);
+        m_mainWindow.grid[2][4]->setVisible(false);
 
         //Game Over anzeigen
-        m_mainWindow.grid[1][3]->setText("Game Over!");
+        m_mainWindow.grid[1][3]->setText("   Game");
+        m_mainWindow.grid[1][4]->setText("Over!  ");
+
+        if(m_mainWindow.player[m_mainWindow.myPlayerId].purse < 0)
+        {
+            m_mainWindow.grid[5][3]->setText("    You");
+            m_mainWindow.grid[5][4]->setText("lost!  ");
+        }
+        else
+        {
+            m_mainWindow.grid[5][3]->setText("    You");
+            m_mainWindow.grid[5][4]->setText("won!   ");
+        }
+
+        m_mainWindow.grid[5][3]->setStyleSheet("color: white;");
+        m_mainWindow.grid[5][4]->setStyleSheet("color: white;");
+
     }
 }
 

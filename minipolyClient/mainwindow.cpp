@@ -17,9 +17,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     initGrid();
 
     grid[2][3]->setIcon(QIcon(QPixmap(":/dice")));
-    grid[1][2]->setVisible(false);
 
-    //Display starting purse
+    //Display starting UI
     grid[3][3]->setText("Your \nPurse:");
     grid[3][3]->setStyleSheet("color: #FFD954");
     grid[3][3]->setVisible(true);
@@ -222,7 +221,7 @@ QString MainWindow::getPenColorFromPlayerId(int playerId)
     switch(playerId)
     {
     case 1:
-        return "#0E5152";
+        return "#4E0A07";
     case 2:
         return "#102432";
     case 3:
