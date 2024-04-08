@@ -94,8 +94,8 @@ void Client::handleReceivedData(QString data)
     {
         m_mainWindow.displayRolledDice(splitData[1].toInt());
 
-        //Zum testen: Selbstspielender Modus
-        debug = true;
+        //Zum testen: Selbstspielender Modus nach erstem Würfeln
+        debug = false;
     }
 
     //Spielfigur bewegen
@@ -114,9 +114,9 @@ void Client::handleReceivedData(QString data)
     }
 
     //Preis setzen
-    if(splitData[0] == "setDisplayedPrice")
+    if(splitData[0] == "displayPurchasingUI")
     {
-        m_mainWindow.setDisplayedPrice(splitData[1].toInt());
+        m_mainWindow.displayPurchasingUI(splitData[1].toInt());
     }
 
     //Vermögen setzen

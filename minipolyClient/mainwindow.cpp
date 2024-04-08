@@ -111,13 +111,6 @@ void MainWindow::setCurrentPlayer(int playerId)
         grid[5][2]->setStyleSheet("background-color: #B80900;");
         grid[5][2]->setAutoFillBackground(true);
 
-        grid[5][5]->setEnabled(true);
-        grid[5][5]->setVisible(true);
-        grid[5][5]->setText("Buy");
-        grid[5][5]->setStyleSheet("background-color: #1AA530;");
-
-        grid[5][5]->setAutoFillBackground(true);
-
         //Enable dice rolling button
         grid[2][3]->setEnabled(true);
         grid[1][3]->setText("  Your");
@@ -160,7 +153,7 @@ void MainWindow::moveCurrentPlayerToGridCoords(int x, int y)
     player[currentPlayerId].positionY = y;
 }
 
-void MainWindow::setDisplayedPrice(int price)
+void MainWindow::displayPurchasingUI(int price)
 {
     if(currentPlayerId == this->myPlayerId)
     {
@@ -169,7 +162,12 @@ void MainWindow::setDisplayedPrice(int price)
         grid[4][5]->setStyleSheet("color: #FFD954;");
         grid[4][5]->setVisible(true);
 
-
+        //KAuf Knopf anzeigen
+        grid[5][5]->setEnabled(true);
+        grid[5][5]->setVisible(true);
+        grid[5][5]->setText("Buy");
+        grid[5][5]->setStyleSheet("background-color: #1AA530;");
+        grid[5][5]->setAutoFillBackground(true);
     }
 }
 

@@ -50,7 +50,7 @@ public:
     int currentPlayerId;
 
     //Preis anzeigen
-    void setDisplayedPrice(int price);
+    void displayPurchasingUI(int price);
 };
 
 #endif // MAINWINDOW_H

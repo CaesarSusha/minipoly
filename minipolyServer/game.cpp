@@ -51,7 +51,7 @@ QString Game::runGame(bool action)
                 if(currentPlayer.getPurse() >= price)
                 {
                     phase = 1;
-                    result += "setDisplayedPrice_" + QString::number(price) + "%";
+                    result += "displayPurchasingUI_" + QString::number(price) + "%";
                     return result;
                 }
                 phase = 2;
