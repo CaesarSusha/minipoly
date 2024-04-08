@@ -14,8 +14,41 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     this->lastXPos = 0;
     this->lastYPos = 0;
 
+    for(int i = 1; i <= 6; i++)
+    {
+        player[i] = Player();
+        player[i].playerId = i;
+    }
+
     initGrid();
 
+    grid[1][3]->setVisible(false);
+    grid[1][4]->setVisible(false);
+
+    connect(grid[3][3], &QPushButton::clicked, this, [=]() {startGame();});
+    connect(grid[3][4], &QPushButton::clicked, this, [=]() {startGame();});
+
+    //Start Game Knopf/Knöpfe anzeigen
+    grid[3][3]->setEnabled(true);
+    grid[3][3]->setFlat(false);
+    grid[3][3]->setText("  Start");
+    grid[3][3]->setStyleSheet("color: white;");
+    grid[3][3]->setStyleSheet("background-color: #D484A2;");
+
+    grid[3][4]->setEnabled(true);
+    grid[3][4]->setFlat(false);
+    grid[3][4]->setText("Game   ");
+    grid[3][4]->setStyleSheet("color: white;");
+    grid[3][4]->setStyleSheet("background-color: #D484A2;"); //#FFD954
+}
+
+void MainWindow::startGame()
+{
+    grid[3][3]->setFlat(true);
+    grid[3][4]->setFlat(true);
+
+    grid[1][3]->setVisible(true);
+    grid[1][4]->setVisible(true);
     grid[2][3]->setIcon(QIcon(QPixmap(":/dice")));
 
     //Display starting UI
@@ -26,12 +59,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     grid[3][4]->setText("10000");
     grid[3][4]->setStyleSheet("color: #FFD954");
     grid[3][4]->setVisible(true);
-
-    for(int i = 1; i <= 6; i++)
-    {
-        player[i] = Player();
-        player[i].playerId = i;
-    }
 }
 
 void MainWindow::initGrid()
@@ -104,13 +131,6 @@ void MainWindow::setCurrentPlayer(int playerId)
     if(currentPlayerId == this->myPlayerId)
     {
 
-        //Kaufentscheidungs-Buttons anschalten
-        grid[5][2]->setEnabled(true);
-        grid[5][2]->setVisible(true);
-        grid[5][2]->setText("Decline");
-        grid[5][2]->setStyleSheet("background-color: #B80900;");
-        grid[5][2]->setAutoFillBackground(true);
-
         //Enable dice rolling button
         grid[2][3]->setEnabled(true);
         grid[1][3]->setText("  Your");
@@ -162,12 +182,19 @@ void MainWindow::displayPurchasingUI(int price)
         grid[4][5]->setStyleSheet("color: #FFD954;");
         grid[4][5]->setVisible(true);
 
-        //KAuf Knopf anzeigen
+        //Kauf Knopf anzeigen
         grid[5][5]->setEnabled(true);
         grid[5][5]->setVisible(true);
         grid[5][5]->setText("Buy");
         grid[5][5]->setStyleSheet("background-color: #1AA530;");
         grid[5][5]->setAutoFillBackground(true);
+
+        //Ablehnungsknopf anzeigen
+        grid[5][2]->setEnabled(true);
+        grid[5][2]->setVisible(true);
+        grid[5][2]->setText("Decline");
+        grid[5][2]->setStyleSheet("background-color: #B80900;");
+        grid[5][2]->setAutoFillBackground(true);
     }
 }
 
