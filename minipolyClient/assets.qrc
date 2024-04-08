@@ -29,5 +29,6 @@
         <file alias="67">assets/gridicons/F3.png</file>
         <file alias="dice">assets/other/dice.svg</file>
         <file alias="40">assets/gridicons/T1.png</file>
+        <file alias="title">assets/other/title.png</file>
     </qresource>
 </RCC>

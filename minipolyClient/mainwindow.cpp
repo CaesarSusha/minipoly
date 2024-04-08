@@ -1,18 +1,22 @@
 #include "mainwindow.h"
+#include "ui_mainwindow.h"
 #include "gridcell.h"
 #include <QGridLayout>
 #include <QLabel>
+#include <QLineEdit>
 #include <QPixmap>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
 {
     this->setStyleSheet("background-color: #1B201D;");
-    this->width = 1920;
-    this->height = 1080;
+    this->width = 900;
+    this->height = 900;
     this->boardSize = 900;
     this->setGeometry(0, 0, width, height);
     this->lastXPos = 0;
     this->lastYPos = 0;
+    this->setFixedSize(*new QSize(width,height));
 
     for(int i = 1; i <= 6; i++)
     {
@@ -21,14 +25,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     }
 
     initGrid();
+    //minipoly Titel anzeigen
+    titleLabel = new QLabel(this);
+    QPixmap pm(":/title");
+    titleLabel->setPixmap(pm);
+    //Das Qlabel, welches das Logo erhält in die mitte des bildes setzen
+    titleLabel->setGeometry(370,300,pm.width(),pm.height());
 
+    //Würfel verstecken
     grid[1][3]->setVisible(false);
     grid[1][4]->setVisible(false);
 
+
+    //Start Game Knopf/Knöpfe anzeigen
     connect(grid[3][3], &QPushButton::clicked, this, [=]() {startGame();});
     connect(grid[3][4], &QPushButton::clicked, this, [=]() {startGame();});
 
-    //Start Game Knopf/Knöpfe anzeigen
     grid[3][3]->setEnabled(true);
     grid[3][3]->setFlat(false);
     grid[3][3]->setText("  Start");
@@ -44,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 void MainWindow::startGame()
 {
+    titleLabel->setVisible(false);
     grid[3][3]->setFlat(true);
     grid[3][4]->setFlat(true);
 
@@ -73,8 +86,8 @@ void MainWindow::initGrid()
             //Maße jeder Zelle ermitteln
             int rectWidth = determineWidth(y);
             int rectHeight = determineHeight(x);
-            int boardStartX = (width-boardSize)/2;
-            int boardStartY = (height-boardSize)/4;
+            int boardStartX = 0;
+            int boardStartY = 0;
             grid[x][y]->setGeometry(QRect(boardStartX +(lastXPos),
                                           boardStartY + (lastYPos),
                                           rectWidth, rectHeight));
