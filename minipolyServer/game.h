@@ -35,6 +35,7 @@ private:
     int playerAmount;
     QString squareBought;
 
+    QString endTurn();
     void endGame();
     void writeCSV(QString filename, QString content);
 

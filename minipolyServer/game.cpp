@@ -54,22 +54,22 @@ QString Game::runGame(bool action)
                     result += "displayPurchasingUI_" + QString::number(price) + "%";
                     return result;
                 }
-                phase = 2;
-                return result;
+                phase = 0;
+                return result + endTurn();
             }
 
             //Das Feld hat keinen Besitzer und ist nicht kaufbar
             if(owner.getId() == -2)
             {
-                phase = 2;;
-                return result + runGame(false);
+                phase = 0;
+                return result + endTurn();
             }
 
             //Der aktuelle Spieler ist der Besitzer
             if(currentPlayer.getId() == owner.getId())
             {
-                phase = 2;
-                return result + runGame(false);
+                phase = 0;
+                return result + endTurn();
             }
 
             //Ermittelung der Miete
@@ -113,19 +113,19 @@ QString Game::runGame(bool action)
                 endGame();
                 return result + "setGameOver";
             }
-            phase = 2;
-            return result + runGame(false);
+            phase = 0;
+            return result + endTurn();
         }
 
         //Warten auf Entscheidung des Spielers
         case 1:
         {
-            phase = 2;
+            phase = 0;
             //Feld nicht kaufen
             if(!action)
             {
                 squareBought = "No";
-                return result + runGame(false);
+                return result + endTurn();
             }
             //Feld kaufen
             int purse  = currentPlayer.getPurse() - gameBoard.squares[currentPlayer.getPosition()].getPrice();
@@ -134,29 +134,7 @@ QString Game::runGame(bool action)
             squareBought = "Yes";
             result = "setPurse_" + QString::number(purse) + "_" + QString::number(currentPlayer.getId()) + "%" +
                      "setOwner_" + QString::number(getCurrentPlayer().getPosition()) + "_" + QString::number(getCurrentPlayer().getId()) + "%";
-            return result + runGame(false);
-        }
-        //Zug beenden
-        case 2:
-        {
-            //Zugereignisse protokollieren
-            QString content = "Turn: " + QString::number(turn) +
-                              ",\t Player" + QString::number(currentPlayer.getId()) +
-                              ",\t Purse: " + QString::number(currentPlayer.getPurse()) +
-                              ",\t Square: " + QString::number(currentPlayer.getPosition());
-            if(squareBought != "")
-            {
-                content += ",\t SquareBought: " + squareBought;
-            }
-
-            content += "\n";
-            writeCSV("protocol", content);
-
-            //Neuen Zug einleiten            
-            phase = 0;
-            currentPlayer = getNextPlayer();
-            squareBought = "";
-            return result + "setCurrentPlayer_" + QString::number(currentPlayer.getId());
+            return result + endTurn();
         }
     }
     return "";
@@ -223,6 +201,27 @@ int Game::getTurn()
 int Game::getPhase()
 {
     return phase;
+}
+
+QString Game::endTurn()
+{
+    //Zugereignisse protokollieren
+    QString content = "Turn: " + QString::number(turn) +
+                      ",\t Player" + QString::number(currentPlayer.getId()) +
+                      ",\t Purse: " + QString::number(currentPlayer.getPurse()) +
+                      ",\t Square: " + QString::number(currentPlayer.getPosition());
+    if(squareBought != "")
+    {
+        content += ",\t SquareBought: " + squareBought;
+    }
+
+    content += "\n";
+    writeCSV("protocol", content);
+
+    //Neuen Zug einleiten
+    currentPlayer = getNextPlayer();
+    squareBought = "";
+    return "setCurrentPlayer_" + QString::number(currentPlayer.getId());
 }
 
 void Game::endGame()
