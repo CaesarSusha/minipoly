@@ -58,6 +58,7 @@ void MainWindow::startGame()
     grid[3][3]->setFlat(true);
     grid[3][4]->setFlat(true);
 
+    //Würfel einblenden
     grid[1][3]->setVisible(true);
     grid[1][4]->setVisible(true);
     grid[2][3]->setIcon(QIcon(QPixmap(":/dice")));

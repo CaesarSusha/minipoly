@@ -13,7 +13,7 @@ Client::Client(const QUrl &url, QObject *parent) : QObject(parent)
     m_mainWindow.show();
 
     //Zum testen: Selbstspielender Modus
-    //debug = false;
+    debug = false;
 }
 
 Client::~Client()

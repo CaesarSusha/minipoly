@@ -17,8 +17,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     GridCell* grid[8][8];
-    QLabel* titleLabel;
-    QPushButton* startGameButton;
 
     //Spielerdaten
     Player player[7];
@@ -49,6 +47,10 @@ private:
     int width;
     int height;
     int boardSize;
+
+    //Willkommensbildschirm
+    QLabel* titleLabel;
+    QPushButton* startGameButton;
 
     //Abmessungen der Rechtecke bestimmen
     int determineWidth(int x);
