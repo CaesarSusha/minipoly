@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include "gridcell.h"
 #include <QGridLayout>
 #include <QLabel>
@@ -25,38 +24,37 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     initGrid();
+
     //minipoly Titel anzeigen
     titleLabel = new QLabel(this);
-    QPixmap pm(":/title");
-    titleLabel->setPixmap(pm);
-    //Das Qlabel, welches das Logo erhält in die mitte des bildes setzen
-    titleLabel->setGeometry(370,300,pm.width(),pm.height());
+    QPixmap pmtitle(":/title");
+    titleLabel->setPixmap(pmtitle);
+    //Das Qlabel, welches das Logo erhält in die Mitte des Bildes setzen
+    titleLabel->setGeometry(370, 300, pmtitle.width(), pmtitle.height());
+
+    //Start Game Knopf anzeigen
+    startGameButton = new QPushButton(this);
+    startGameButton->setText("Start Game");
+    startGameButton->setEnabled(true);
+    startGameButton->setVisible(true);
+    startGameButton->setGeometry(370, 400, pmtitle.width(), pmtitle.height());
+    startGameButton->setStyleSheet("background-color: #D484A2");
+
+    //Start Game Knopf verbinden
+    connect(startGameButton, &QPushButton::clicked, this, [=]() {startGame();});
+    connect(startGameButton, &QPushButton::clicked, this, [=]() {startGame();});
 
     //Würfel verstecken
     grid[1][3]->setVisible(false);
     grid[1][4]->setVisible(false);
-
-
-    //Start Game Knopf/Knöpfe anzeigen
-    connect(grid[3][3], &QPushButton::clicked, this, [=]() {startGame();});
-    connect(grid[3][4], &QPushButton::clicked, this, [=]() {startGame();});
-
-    grid[3][3]->setEnabled(true);
-    grid[3][3]->setFlat(false);
-    grid[3][3]->setText("  Start");
-    grid[3][3]->setStyleSheet("color: white;");
-    grid[3][3]->setStyleSheet("background-color: #D484A2;");
-
-    grid[3][4]->setEnabled(true);
-    grid[3][4]->setFlat(false);
-    grid[3][4]->setText("Game   ");
-    grid[3][4]->setStyleSheet("color: white;");
-    grid[3][4]->setStyleSheet("background-color: #D484A2;"); //#FFD954
 }
 
 void MainWindow::startGame()
 {
+    //Willkommens-UI ausblenden
     titleLabel->setVisible(false);
+    startGameButton->setVisible(false);
+
     grid[3][3]->setFlat(true);
     grid[3][4]->setFlat(true);
 

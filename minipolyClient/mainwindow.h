@@ -10,10 +10,6 @@
 #include <QPainter>
 #include "player.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -22,6 +18,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     GridCell* grid[8][8];
     QLabel* titleLabel;
+    QPushButton* startGameButton;
 
     //Spielerdaten
     Player player[7];
@@ -43,8 +40,6 @@ public:
     void displayPurchasingUI(int price);
 
 private:
-    //Das Fenster
-    Ui::MainWindow *ui;
 
     //Spielbeginn
     void startGame();
