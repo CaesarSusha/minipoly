@@ -45,6 +45,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(startGameButton, &QPushButton::clicked, this, [=]() {startGame();});
 
     //Würfel verstecken
+    grid[2][3]->setVisible(false);
+    grid[2][4]->setVisible(false);
+
+    //Zugtext verstecken
     grid[1][3]->setVisible(false);
     grid[1][4]->setVisible(false);
 }
@@ -55,20 +59,20 @@ void MainWindow::startGame()
     titleLabel->setVisible(false);
     startGameButton->setVisible(false);
 
-    grid[3][3]->setFlat(true);
-    grid[3][4]->setFlat(true);
-
     //Würfel einblenden
+    grid[2][3]->setVisible(true);
+    grid[2][4]->setVisible(true);
+
+    //Zugtext einblenden
     grid[1][3]->setVisible(true);
     grid[1][4]->setVisible(true);
-    grid[2][3]->setIcon(QIcon(QPixmap(":/dice")));
 
     //Display starting UI
     grid[3][3]->setText("Your \nPurse:");
     grid[3][3]->setStyleSheet("color: #FFD954");
     grid[3][3]->setVisible(true);
 
-    grid[3][4]->setText("10000");
+    grid[3][4]->setText(QString::number(player[myPlayerId].purse));
     grid[3][4]->setStyleSheet("color: #FFD954");
     grid[3][4]->setVisible(true);
 }
@@ -142,8 +146,8 @@ void MainWindow::setCurrentPlayer(int playerId)
     currentPlayerId = playerId;
     if(currentPlayerId == this->myPlayerId)
     {
-
         //Enable dice rolling button
+        grid[2][3]->setIcon(QIcon(QPixmap(":/diceOn")));
         grid[2][3]->setEnabled(true);
         grid[1][3]->setText("  Your");
         grid[1][4]->setText("Turn!  ");
@@ -155,7 +159,9 @@ void MainWindow::setCurrentPlayer(int playerId)
         //Disable Buy buttons
         grid[5][2]->setVisible(false);
         grid[5][5]->setVisible(false);
+
         //Disable dice rolling button
+        grid[2][3]->setIcon(QIcon(QPixmap(":/diceOff")));
         grid[2][3]->setEnabled(false);
         grid[1][3]->setText("Waiting");
         grid[1][3]->setStyleSheet("color: white;");
@@ -219,15 +225,7 @@ void MainWindow::setPurse(int purse, int playerId)
             player[i].purse = purse;
         }
     }
-
-    if(this->player[myPlayerId].purse == 0)
-    {
-        grid[3][4]->setText("10000");
-    }
-    else
-    {
-        grid[3][4]->setText(QString::number(player[myPlayerId].purse));
-    }
+    grid[3][4]->setText(QString::number(player[myPlayerId].purse));
 
     qInfo()<<"Player " << this->myPlayerId << " Purse: " << player[this->myPlayerId].purse;
 }

@@ -27,8 +27,9 @@
         <file alias="72">assets/gridicons/H1.png</file>
         <file alias="71">assets/gridicons/H2.png</file>
         <file alias="67">assets/gridicons/F3.png</file>
-        <file alias="dice">assets/other/dice.svg</file>
         <file alias="40">assets/gridicons/T1.png</file>
         <file alias="title">assets/other/title.png</file>
+        <file alias="diceOff">assets/other/diceOff.svg</file>
+        <file alias="diceOn">assets/other/diceOn.svg</file>
     </qresource>
 </RCC>
