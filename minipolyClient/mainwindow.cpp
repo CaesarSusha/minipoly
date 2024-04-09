@@ -32,17 +32,23 @@ MainWindow::MainWindow(QWidget *parent)
     //Das Qlabel, welches das Logo erhält in die Mitte des Bildes setzen
     titleLabel->setGeometry(370, 300, pmtitle.width(), pmtitle.height());
 
-    //Start Game Knopf anzeigen
-    startGameButton = new QPushButton(this);
-    startGameButton->setText("Start Game");
-    startGameButton->setEnabled(true);
-    startGameButton->setVisible(true);
-    startGameButton->setGeometry(370, 400, pmtitle.width(), pmtitle.height());
-    startGameButton->setStyleSheet("background-color: #D484A2");
+    //Menschlicher Player Knopf anzeigen und verbinden
+    humanPlayerButton = new QPushButton(this);
+    humanPlayerButton->setText("Human");
+    humanPlayerButton->setEnabled(true);
+    humanPlayerButton->setVisible(true);
+    humanPlayerButton->setGeometry(370, 400, pmtitle.width(), pmtitle.height());
+    humanPlayerButton->setStyleSheet("background-color: #D484A2");
+    connect(humanPlayerButton, &QPushButton::clicked, this, [=]() {startGame();});
 
-    //Start Game Knopf verbinden
-    connect(startGameButton, &QPushButton::clicked, this, [=]() {startGame();});
-    connect(startGameButton, &QPushButton::clicked, this, [=]() {startGame();});
+    //KI-Spieler Knopf
+    computerPlayerButton = new QPushButton(this);
+    computerPlayerButton->setText("Computer");
+    computerPlayerButton->setEnabled(true);
+    computerPlayerButton->setVisible(true);
+    computerPlayerButton->setGeometry(370, 500, pmtitle.width(), pmtitle.height());
+    computerPlayerButton->setStyleSheet("background-color: #5C78AC");
+    connect(computerPlayerButton, &QPushButton::clicked, this, [=]() {startGame();});
 
     //Würfel verstecken
     grid[2][3]->setVisible(false);
@@ -57,7 +63,8 @@ void MainWindow::startGame()
 {
     //Willkommens-UI ausblenden
     titleLabel->setVisible(false);
-    startGameButton->setVisible(false);
+    humanPlayerButton->setVisible(false);
+    computerPlayerButton->setVisible(false);
 
     //Würfel einblenden
     grid[2][3]->setVisible(true);

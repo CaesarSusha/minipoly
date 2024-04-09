@@ -33,6 +33,9 @@ void Client::onConnection()
     connect(m_mainWindow.grid[5][2], &QPushButton::clicked, this, [=]() {transmitData("0");});
     //Kauf vornehmen Knopf
     connect(m_mainWindow.grid[5][5], &QPushButton::clicked, this, [=]() {transmitData("1");});
+
+    //KI-Modus Knopf
+    connect(m_mainWindow.computerPlayerButton, &QPushButton::clicked, this, [=]() {debug = true; qInfo()<<"debug set to true";});
 }
 
 void Client::onDisconnection()
@@ -95,7 +98,7 @@ void Client::handleReceivedData(QString data)
         m_mainWindow.displayRolledDice(splitData[1].toInt());
 
         //Zum testen: Selbstspielender Modus nach erstem Würfeln
-        debug = false;
+        //debug = false;
     }
 
     //Spielfigur bewegen

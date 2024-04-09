@@ -37,6 +37,9 @@ public:
     //Preis anzeigen
     void displayPurchasingUI(int price);
 
+    //KI Spielmodus
+    QPushButton* computerPlayerButton;
+
 private:
 
     //Spielbeginn
@@ -50,7 +53,7 @@ private:
 
     //Willkommensbildschirm
     QLabel* titleLabel;
-    QPushButton* startGameButton;
+    QPushButton* humanPlayerButton;
 
     //Abmessungen der Rechtecke bestimmen
     int determineWidth(int x);

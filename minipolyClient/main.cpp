@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     QFont font("Sans");
     font.setStyleHint(QFont::Monospace);
-    font.setPointSize(10);
+    font.setPointSize(15);
     font.setWeight(80);
     QApplication::setFont(font);
 
